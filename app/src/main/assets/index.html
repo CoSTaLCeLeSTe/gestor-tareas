@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>Mi Despacho</title>
+<style>
+/* Despacho cálido: cabecera de madera con luz de lámpara, tablón de corcho, notas tipo post-it con chincheta de color por criticidad */
+@font-face{font-family:"Fredoka";src:url("fuentes/fredoka.ttf");font-weight:300 700}
+@font-face{font-family:"Nunito";src:url("fuentes/nunito.ttf");font-weight:200 1000}
+:root{
+  --madera:#5a3b26; --madera-2:#3b2618; --veta:#6b4630;
+  --corcho:#caa074; --mota-1:#a97c4f; --mota-2:#e2c39a;
+  --papel:#fff9ec; --papel-2:#f6ead2; --tinta:#2e2118; --tinta-2:#6d5846; --linea:rgba(46,33,24,.14);
+  --laton:#c9973f; --laton-2:#f1cf86;
+  --nota-tinta:#2e2118;
+  --pi-amarillo:#ffe68c; --pi-rosa:#ffcad0; --pi-azul:#c6e5f7; --pi-verde:#d4edb6; --pi-naranja:#ffd5a6; --pi-lila:#e3d4f7;
+  --c4:#d23a2c; --c3:#ec7b2a; --c2:#dfae1c; --c1:#55a246;
+  --pend:#b8641f; --seg:#3a77a8; --cerr:#468a37; --peligro:#c0392b;
+  --sombra:0 1px 1px rgba(40,25,10,.18),0 6px 14px -6px rgba(40,25,10,.45);
+  --f-titulo:"Fredoka","Nunito",system-ui,sans-serif;
+  --f-texto:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --madera:#3a2619; --madera-2:#21150d; --veta:#47301f;
+  --corcho:#6f5136; --mota-1:#5a402a; --mota-2:#86643f;
+  --papel:#2e231b; --papel-2:#3a2d22; --tinta:#f5e7d0; --tinta-2:#cbb59a; --linea:rgba(245,231,208,.14);
+  --pend:#e59a55; --seg:#7db4e0; --cerr:#86c56f; --peligro:#ff7a68;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --madera:#3a2619; --madera-2:#21150d; --veta:#47301f;
+  --corcho:#6f5136; --mota-1:#5a402a; --mota-2:#86643f;
+  --papel:#2e231b; --papel-2:#3a2d22; --tinta:#f5e7d0; --tinta-2:#cbb59a; --linea:rgba(245,231,208,.14);
+  --pend:#e59a55; --seg:#7db4e0; --cerr:#86c56f; --peligro:#ff7a68;
+  color-scheme:dark}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{font-family:var(--f-texto);color:var(--tinta);font-size:15px;line-height:1.4;
+  background-color:var(--corcho);
+  background-image:radial-gradient(var(--mota-1) 1px,transparent 1.6px),radial-gradient(var(--mota-2) 1px,transparent 1.6px),radial-gradient(var(--mota-1) .8px,transparent 1.3px);
+  background-size:9px 9px,13px 13px,5px 7px;background-position:0 0,4px 6px,2px 3px;
+  overscroll-behavior:none}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--laton);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Cabecera de madera */
+.cab{position:sticky;top:0;z-index:20;color:#fbeed6;padding:14px 16px 12px;
+  background:radial-gradient(120% 140% at 88% -30%,rgba(255,206,120,.42),transparent 55%),
+    repeating-linear-gradient(176deg,var(--madera) 0 7px,var(--veta) 7px 9px,var(--madera) 9px 17px,var(--madera-2) 17px 18px);
+  box-shadow:0 4px 10px -4px rgba(0,0,0,.5)}
+.cab-fila{display:flex;align-items:center;gap:12px;max-width:560px;margin:0 auto}
+.placa{display:inline-block;font:600 10px/1 var(--f-titulo);letter-spacing:.18em;text-transform:uppercase;color:#4a3216;
+  background:linear-gradient(180deg,var(--laton-2),var(--laton));padding:4px 8px;border-radius:3px;box-shadow:inset 0 -1px 0 rgba(0,0,0,.25)}
+.saludo{font:600 22px/1.15 var(--f-titulo);margin:6px 0 1px;text-wrap:balance}
+.fecha{font-size:13px;opacity:.85}
+.cab-txt{flex:1;min-width:0}
+.campana{position:relative;flex:none;width:46px;height:46px;border-radius:50%;border:0;font-size:22px;
+  background:rgba(255,230,180,.14);box-shadow:inset 0 0 0 1px rgba(255,230,180,.25)}
+.campana b{position:absolute;top:-2px;right:-2px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:var(--c4);color:#fff;font:700 12px/20px var(--f-texto)}
+
+main{max-width:560px;margin:0 auto;padding:14px 16px 120px;display:flex;flex-direction:column;gap:16px}
+
+/* Papel y secciones */
+.papel{background:var(--papel);border-radius:6px;box-shadow:var(--sombra);padding:14px;position:relative}
+.papel h2,.sec-tit{font:600 17px/1.2 var(--f-titulo);margin:0 0 10px;display:flex;align-items:center;gap:8px}
+.sec-tit{color:#fff8e6;text-shadow:0 1px 2px rgba(0,0,0,.45);margin:4px 2px -6px}
+.papel h2 small{margin-left:auto;font:600 12px var(--f-texto);color:var(--tinta-2)}
+.chinche{position:absolute;top:-7px;left:50%;width:16px;height:16px;margin-left:-8px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff8 0 2px,transparent 3px),var(--pin,var(--c4));box-shadow:0 2px 3px rgba(0,0,0,.4)}
+
+/* Post-its de estado */
+.estados{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pstat{border:0;text-align:left;padding:12px 10px 10px;border-radius:2px;color:var(--nota-tinta);box-shadow:var(--sombra);position:relative;min-width:0}
+.pstat:nth-child(1){background:var(--pi-naranja);transform:rotate(-1.5deg)}
+.pstat:nth-child(2){background:var(--pi-azul);transform:rotate(1deg)}
+.pstat:nth-child(3){background:var(--pi-verde);transform:rotate(-.6deg)}
+.pstat .em{font-size:20px}
+.pstat .n{display:block;font:600 30px/1 var(--f-titulo);margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.pstat .l{font-size:12px;font-weight:700}
+.pstat .s{display:block;font-size:11px;opacity:.75}
+
+/* Lista de tareas en papel */
+.fila{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px dashed var(--linea);width:100%;background:none;border-left:0;border-right:0;border-bottom:0;text-align:left}
+.fila:first-of-type{border-top:0}
+.punto{flex:none;width:12px;height:12px;border-radius:50%;background:var(--pin);box-shadow:0 0 0 2px var(--papel),0 0 0 3px var(--pin)}
+.fila .t{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fila .t small{display:block;font-weight:600;font-size:12px;color:var(--tinta-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fila .v{flex:none;font-size:12px;font-weight:800;color:var(--tinta-2)}
+.fila .v.mal{color:var(--peligro)}
+.vacio{color:var(--tinta-2);font-size:14px;margin:4px 0}
+.alerta{--pin:var(--c4);border-left:5px solid var(--peligro)}
+
+/* Próximos 14 días */
+.tira{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+.dia{border-radius:6px;padding:5px 2px;text-align:center;background:var(--papel-2);font-size:11px;line-height:1.15;border:0}
+.dia b{display:block;font:600 16px var(--f-titulo);font-variant-numeric:tabular-nums}
+.dia.h1{background:#f7dc9b;color:#2e2118}.dia.h2{background:#f2b36c;color:#2e2118}.dia.h3{background:#e5763f;color:#fff}
+.dia.hoy{box-shadow:inset 0 0 0 2px var(--laton)}
+
+/* Barras */
+.barra{height:10px;border-radius:5px;background:var(--papel-2);overflow:hidden;display:flex}
+.barra i{display:block;height:100%}
+.asu{display:grid;grid-template-columns:auto 1fr auto;gap:4px 10px;align-items:center;padding:6px 0}
+.asu .nm{font-weight:700;font-size:14px}
+.asu .ct{font-size:12px;font-weight:700;color:var(--tinta-2);font-variant-numeric:tabular-nums}
+.asu .barra{grid-column:1/-1}
+
+/* Tablón */
+.segm{display:grid;grid-template-columns:repeat(4,1fr);background:var(--madera-2);border-radius:10px;padding:4px;gap:4px;box-shadow:inset 0 1px 3px rgba(0,0,0,.5)}
+.segm button{border:0;border-radius:7px;background:none;color:#f4e3c6;padding:7px 2px;font-size:12px;font-weight:800;line-height:1.1}
+.segm button span{display:block;font-size:16px}
+.segm button[aria-pressed="true"]{background:var(--papel);color:var(--tinta);box-shadow:var(--sombra)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:0;border-radius:999px;padding:7px 12px;background:var(--papel);color:var(--tinta);font-size:13px;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.25);white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--madera);color:#fff4df;box-shadow:inset 0 0 0 2px var(--laton)}
+.herr{display:flex;gap:8px}
+.herr input,.herr select{flex:1;min-width:0;border:0;border-radius:8px;padding:9px 11px;background:var(--papel);box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.herr select{flex:0 0 auto}
+.notas{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 14px;padding-top:8px}
+.nota{border:0;text-align:left;padding:16px 11px 10px;min-height:150px;display:flex;flex-direction:column;gap:6px;color:var(--nota-tinta);
+  border-radius:1px 1px 18px 1px/1px 1px 10px 1px;box-shadow:var(--sombra);position:relative;transition:transform .15s}
+.nota:nth-child(3n+1){transform:rotate(-1.4deg)}.nota:nth-child(3n+2){transform:rotate(1.1deg)}.nota:nth-child(3n){transform:rotate(-.4deg)}
+.nota:active{transform:scale(.97)}
+.nota.cerrada{opacity:.72}
+.nota.cerrada .nt{text-decoration:line-through;text-decoration-thickness:2px}
+.nota .as{font-size:11px;font-weight:800;opacity:.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.nota .nt{font:500 16px/1.2 var(--f-titulo);display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.nota .pie{margin-top:auto;display:flex;flex-wrap:wrap;gap:4px 8px;font-size:11.5px;font-weight:800;align-items:center}
+.nota .venc.mal{color:#a11f12}
+.tag{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 8px;font-size:11.5px;font-weight:800;background:rgba(46,33,24,.1)}
+.pi-amarillo{background:var(--pi-amarillo)}.pi-rosa{background:var(--pi-rosa)}.pi-azul{background:var(--pi-azul)}
+.pi-verde{background:var(--pi-verde)}.pi-naranja{background:var(--pi-naranja)}.pi-lila{background:var(--pi-lila)}
+.contador{color:#fff8e6;font-weight:700;font-size:13px;text-shadow:0 1px 2px rgba(0,0,0,.5);margin:0 2px}
+
+/* Métricas */
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.kpi{background:var(--papel);border-radius:6px;padding:12px;box-shadow:var(--sombra);min-width:0}
+.kpi .em{font-size:20px}
+.kpi b{display:block;font:600 28px/1.05 var(--f-titulo);margin-top:4px;font-variant-numeric:tabular-nums}
+.kpi span{font-size:12.5px;font-weight:700;color:var(--tinta-2)}
+.kpi.ancho{grid-column:1/-1;display:flex;align-items:center;gap:12px}
+.kpi.ancho b{margin:0}
+.grafico{width:100%;height:auto;display:block}
+.grafico text{fill:var(--tinta-2);font:700 10px var(--f-texto)}
+.leyenda{display:flex;gap:14px;font-size:12px;font-weight:700;color:var(--tinta-2);margin-top:6px;flex-wrap:wrap}
+.leyenda i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.semana{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;align-items:end;height:110px}
+.semana div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px;font-size:11px;font-weight:800;color:var(--tinta-2)}
+.semana i{display:block;width:70%;border-radius:4px 4px 0 0;background:var(--laton);min-height:2px}
+.semana .top i{background:var(--cerr)}
+
+/* Ajustes */
+.op{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px dashed var(--linea)}
+.op:first-of-type{border-top:0}
+.op .tx{flex:1;min-width:0}
+.op .tx small{display:block;color:var(--tinta-2);font-size:12.5px}
+.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:800;background:var(--madera);color:#fff4df;box-shadow:0 2px 0 var(--madera-2)}
+.btn:active{transform:translateY(1px);box-shadow:none}
+.btn.sec{background:var(--papel-2);color:var(--tinta);box-shadow:0 2px 0 var(--linea)}
+.btn.peligro{background:var(--peligro);box-shadow:0 2px 0 #7c1d12}
+.btn.ok{background:var(--cerr);box-shadow:0 2px 0 #2b5a20}
+.estado-ok{color:var(--cerr);font-weight:800;font-size:13px}.estado-mal{color:var(--peligro);font-weight:800;font-size:13px}
+
+/* Banner de ejemplos */
+.ejemplo{background:var(--pi-lila);color:var(--nota-tinta);border-radius:6px;padding:10px 12px;display:flex;gap:10px;align-items:center;font-size:13.5px;font-weight:700;box-shadow:var(--sombra)}
+.ejemplo span{flex:1}
+.ejemplo .btn{padding:8px 10px;font-size:13px}
+
+/* Botón añadir y navegación */
+.fab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:30;width:62px;height:62px;border-radius:50%;border:0;
+  background:radial-gradient(circle at 35% 30%,var(--laton-2),var(--laton) 60%,#9b6e22);color:#3b2410;font:600 34px/1 var(--f-titulo);box-shadow:0 6px 14px rgba(0,0,0,.45)}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;display:grid;grid-template-columns:repeat(4,1fr);
+  padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));
+  background:repeating-linear-gradient(90deg,var(--madera) 0 22px,var(--veta) 22px 24px,var(--madera) 24px 51px,var(--madera-2) 51px 52px);box-shadow:0 -4px 10px -4px rgba(0,0,0,.5)}
+.nav button{border:0;background:none;color:#e7d2b0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 0;font-size:11.5px;font-weight:800;border-radius:10px}
+.nav button span{font-size:22px;line-height:1;filter:saturate(.6)}
+.nav button[aria-current="page"]{color:#fff6e3;background:rgba(255,220,160,.16)}
+.nav button[aria-current="page"] span{filter:none}
+
+/* Hoja inferior */
+.velo{position:fixed;inset:0;z-index:40;background:rgba(25,15,8,.55)}
+.hoja{position:fixed;left:0;right:0;bottom:0;z-index:41;max-height:92%;overflow-y:auto;background:var(--papel);border-radius:18px 18px 0 0;
+  padding:8px max(16px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -8px 24px rgba(0,0,0,.4);animation:sube .22s ease-out}
+.hoja-in{max-width:560px;margin:0 auto}
+@keyframes sube{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+.asa{width:44px;height:5px;border-radius:3px;background:var(--linea);margin:4px auto 12px}
+.hoja h3{font:600 21px/1.2 var(--f-titulo);margin:0 0 12px;text-wrap:balance;word-break:break-word}
+.campo{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.campo>label,.campo>.lb{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-2)}
+.campo input,.campo textarea,.campo select{border:1.5px solid var(--linea);background:var(--papel-2);border-radius:10px;padding:11px 12px;width:100%}
+.campo textarea{min-height:76px;resize:vertical}
+.dos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opciones{display:flex;flex-wrap:wrap;gap:7px}
+.opciones .chip{background:var(--papel-2);box-shadow:inset 0 0 0 1.5px var(--linea)}
+.opciones .chip[aria-pressed="true"]{background:var(--madera);color:#fff4df;box-shadow:inset 0 0 0 2px var(--laton)}
+.acciones{display:flex;gap:10px;margin-top:6px}
+.acciones .btn{flex:1;padding:13px}
+.cambio{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 16px}
+.cambio button{border:0;border-radius:12px;padding:10px 4px;font-weight:800;font-size:13px;background:var(--papel-2);color:var(--tinta);box-shadow:inset 0 0 0 1.5px var(--linea)}
+.cambio button span{display:block;font-size:22px}
+.cambio button[aria-pressed="true"]{color:#fff;box-shadow:none}
+.cambio button[data-e="pend"][aria-pressed="true"]{background:var(--pend)}
+.cambio button[data-e="seg"][aria-pressed="true"]{background:var(--seg)}
+.cambio button[data-e="cerr"][aria-pressed="true"]{background:var(--cerr)}
+.det-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.det-tags .tag{background:var(--papel-2);color:var(--tinta);padding:5px 10px;font-size:12.5px}
+.det-notas{white-space:pre-wrap;background:var(--papel-2);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:14.5px}
+.sub{display:flex;align-items:center;gap:10px;padding:7px 0}
+.sub input{width:22px;height:22px;accent-color:var(--cerr);flex:none}
+.sub span{flex:1;min-width:0;word-break:break-word}
+.sub.ok span{text-decoration:line-through;color:var(--tinta-2)}
+.sub .x{border:0;background:none;font-size:18px;color:var(--tinta-2);padding:2px 6px}
+.add-sub{display:flex;gap:8px}
+.add-sub input{flex:1;min-width:0}
+.hist{list-style:none;margin:0 0 14px;padding:0 0 0 14px;border-left:2px dashed var(--linea);font-size:13px;color:var(--tinta-2)}
+.hist li{margin:0 0 6px;position:relative}
+.hist li::before{content:"";position:absolute;left:-20px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--laton)}
+.confirma{background:var(--pi-rosa);color:var(--nota-tinta);border-radius:10px;padding:10px 12px;font-weight:700;margin-top:10px}
+.confirma .acciones{margin-top:8px}
+
+.toast{position:fixed;left:50%;bottom:calc(160px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--madera-2);color:#fff4df;
+  padding:10px 16px;border-radius:999px;font-weight:800;font-size:14px;box-shadow:0 6px 16px rgba(0,0,0,.4);max-width:90%;text-align:center}
+.mini{font-size:12.5px;color:var(--tinta-2)}
+</style>
+</head>
+<body>
+<header class="cab">
+  <div class="cab-fila">
+    <div class="cab-txt">
+      <span class="placa">Mi despacho</span>
+      <div class="saludo" id="saludo">Buenas</div>
+      <div class="fecha" id="fecha"></div>
+    </div>
+    <button class="campana" id="campana" aria-label="Tareas que vencen en las próximas 24 horas">🔔</button>
+  </div>
+</header>
+
+<main id="vista"></main>
+
+<button class="fab" id="fab" aria-label="Nueva tarea">＋</button>
+
+<nav class="nav" aria-label="Secciones">
+  <button data-ir="escritorio" aria-current="page"><span>🗂️</span>Escritorio</button>
+  <button data-ir="tablon"><span>📌</span>Tablón</button>
+  <button data-ir="metricas"><span>📊</span>Métricas</button>
+  <button data-ir="ajustes"><span>⚙️</span>Ajustes</button>
+</nav>
+
+<div class="velo" id="velo" hidden></div>
+<section class="hoja" id="hoja" hidden role="dialog" aria-modal="true"><div class="hoja-in" id="hojaIn"></div></section>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+"use strict";
+/* ---------- Catálogos ---------- */
+const COLORES=["amarillo","rosa","azul","verde","naranja","lila"];
+const ASUNTOS_BASE=[
+  {id:"uned",nombre:"UNED / Derecho",emoji:"⚖️",color:"amarillo"},
+  {id:"familia",nombre:"Familia y casa",emoji:"👨‍👩‍👦",color:"rosa"},
+  {id:"tramites",nombre:"Trámites y autónomo",emoji:"📑",color:"azul"},
+  {id:"casas",nombre:"Gestión casas",emoji:"🏘️",color:"verde"}];
+const CRIT={4:{n:"Crítica",e:"🔥",v:"--c4"},3:{n:"Alta",e:"🔴",v:"--c3"},2:{n:"Media",e:"🟡",v:"--c2"},1:{n:"Baja",e:"🟢",v:"--c1"}};
+const ESTADOS={pend:{n:"Pendiente",e:"⏳"},seg:{n:"Seguimiento",e:"👀"},cerr:{n:"Cerrado",e:"✅"}};
+const AVISOS=[
+  {id:"7d",n:"1 semana antes"},{id:"1d",n:"1 día antes"},{id:"dia",n:"El mismo día"},
+  {id:"2h",n:"2 horas antes"},{id:"venc",n:"Al vencer"}];
+const DIA=864e5;
+
+/* ---------- Estado y almacenamiento ---------- */
+const CLAVE="despacho.v1";
+let S;
+let ui={vista:"escritorio",filtroEstado:"abiertas",filtroAsunto:"todos",orden:"venc",busca:"",hoja:null};
+
+function cargar(){
+  let d=null;
+  try{d=JSON.parse(localStorage.getItem(CLAVE)||"null")}catch(e){}
+  if(!d){d={tareas:ejemplos(),asuntos:ASUNTOS_BASE.slice(),ajustes:{avisos:["1d"],horaDia:"08:30",horaDef:"09:00"}}}
+  d.asuntos=d.asuntos||ASUNTOS_BASE.slice();
+  d.ajustes=Object.assign({avisos:["1d"],horaDia:"08:30",horaDef:"09:00"},d.ajustes||{});
+  return d;
+}
+function guardar(){try{localStorage.setItem(CLAVE,JSON.stringify(S))}catch(e){aviso("No se pudo guardar: memoria llena")}sincronizarAlarmas()}
+const nid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+
+/* ---------- Puente Android ---------- */
+const A=window.Android||null;
+function llamar(f,...a){try{return A&&A[f]?A[f](...a):null}catch(e){return null}}
+
+/* ---------- Fechas ---------- */
+const pad=n=>String(n).padStart(2,"0");
+const isoDia=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const inicioDia=d=>{const x=new Date(d);x.setHours(0,0,0,0);return x};
+function venceDe(t){if(!t.fecha)return null;const [y,m,d]=t.fecha.split("-").map(Number);const [h,mi]=(t.hora||"23:59").split(":").map(Number);return new Date(y,m-1,d,h,mi)}
+function difDias(a,b){return Math.round((inicioDia(a)-inicioDia(b))/DIA)}
+const fmtCorto=new Intl.DateTimeFormat("es-ES",{weekday:"short",day:"numeric",month:"short"});
+const fmtLargo=new Intl.DateTimeFormat("es-ES",{weekday:"long",day:"numeric",month:"long"});
+const fmtFH=new Intl.DateTimeFormat("es-ES",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+function etiquetaVence(t){
+  const v=venceDe(t);if(!v)return {txt:"Sin fecha",mal:false};
+  const hoy=new Date(),d=difDias(v,hoy),h=t.hora?" "+t.hora:"";
+  const cerr=t.estado==="cerr";
+  if(!cerr&&v<hoy){return {txt:d===0?"Venció hoy"+h:d===-1?"Venció ayer":"Vencida hace "+(-d)+" d",mal:true}}
+  let txt=d===0?"Hoy"+h:d===1?"Mañana"+h:d===-1?"Ayer":d>1&&d<7?"En "+d+" días":fmtCorto.format(v);
+  return {txt,mal:false};
+}
+
+/* ---------- Utilidades ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const asunto=id=>S.asuntos.find(a=>a.id===id)||{id,nombre:"Sin asunto",emoji:"📁",color:"amarillo"};
+const abiertas=()=>S.tareas.filter(t=>t.estado!=="cerr");
+const vencidas=()=>abiertas().filter(t=>{const v=venceDe(t);return v&&v<new Date()});
+let toastT;
+function aviso(m){const t=$("#toast");t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2400)}
+function vibrar(){try{navigator.vibrate&&navigator.vibrate(18)}catch(e){}}
+
+/* ---------- Ejemplos ---------- */
+function ejemplos(){
+  const ahora=Date.now(),f=d=>{const x=new Date();x.setDate(x.getDate()+d);return isoDia(x)};
+  const mk=(titulo,as,crit,estado,dv,hora,creadaD,cerrD,extra={})=>{
+    const creada=ahora+creadaD*DIA,hist=[{e:"pend",at:creada}];
+    if(estado==="seg"||(estado==="cerr"&&extra.porSeg))hist.push({e:"seg",at:creada+DIA});
+    if(estado==="cerr")hist.push({e:"cerr",at:ahora+cerrD*DIA});
+    return Object.assign({id:nid(),titulo,asunto:as,crit,estado,fecha:f(dv),hora,avisos:["1d"],notas:"",sub:[],creada,
+      cerrada:estado==="cerr"?ahora+cerrD*DIA:null,segDesde:estado==="seg"?creada+DIA:null,hist,ejemplo:true},extra)};
+  return [
+    mk("Presentar modelo 130 del 3.er trimestre","tramites",4,"pend",2,"14:00",-6,0,{notas:"Revisar facturas de septiembre antes de presentarlo."}),
+    mk("Entregar PEC de Derecho Civil III","uned",4,"pend",4,"23:59",-9,0,{sub:[{t:"Leer el enunciado",ok:true},{t:"Redactar respuestas",ok:false},{t:"Subir al curso virtual",ok:false}]}),
+    mk("Llamar al fontanero por la humedad del baño","casas",3,"pend",1,"10:00",-2,0),
+    mk("Revisar caldera de la casa de El Puerto","casas",2,"seg",-1,"12:00",-10,0,{notas:"El técnico quedó en confirmar la cita."}),
+    mk("Repasar Tema 4 de Penal II","uned",2,"seg",6,"20:00",-5,0),
+    mk("Renovar el seguro de la furgoneta","tramites",2,"pend",12,"09:00",-3,0),
+    mk("Apuntar al peque a natación","familia",1,"pend",9,"18:00",-1,0),
+    mk("Resumen del Tema 3 de Penal II","uned",3,"cerr",-2,"21:00",-8,-1,{porSeg:true}),
+    mk("Cambiar la bombona de butano","familia",2,"cerr",-4,"10:00",-6,-3),
+    mk("Emitir la factura de septiembre","tramites",3,"cerr",-15,"12:00",-18,-15),
+    mk("Matrícula UNED curso 2026-27","uned",4,"cerr",-10,"23:59",-25,-12),
+    mk("Pasar la ITV del coche","tramites",3,"cerr",-28,"09:00",-40,-30),
+    mk("Pagar la comunidad de la casa de El Puerto","casas",2,"cerr",-5,"12:00",-12,-6)];
+}
+
+/* ---------- Alarmas ---------- */
+function hashId(s){let h=0;for(const c of s)h=(h*31+c.charCodeAt(0))|0;return Math.abs(h)%2000000000+1}
+function momentosAviso(t){
+  const v=venceDe(t);if(!v)return [];
+  const out=[];
+  for(const a of t.avisos||[]){
+    let at;
+    if(a==="7d")at=v-7*DIA;else if(a==="1d")at=v-DIA;else if(a==="2h")at=v-2*36e5;else if(a==="venc")at=+v;
+    else if(a==="dia"){const [h,m]=S.ajustes.horaDia.split(":").map(Number);const x=new Date(v);x.setHours(h,m,0,0);at=+x;if(at>+v)continue}
+    out.push({clave:a,at});
+  }
+  return out;
+}
+const TXT_AVISO={"7d":"📆 Vence en una semana","1d":"⏰ Mañana vence","dia":"☀️ Hoy vence","2h":"⌛ Vence en 2 horas","venc":"🚨 Vence ahora"};
+function sincronizarAlarmas(){
+  if(!A)return;
+  const ahora=Date.now(),lista=[];
+  for(const t of abiertas()){
+    if(t.ejemplo)continue;
+    const as=asunto(t.asunto),v=venceDe(t);
+    for(const m of momentosAviso(t)){
+      if(m.at<=ahora)continue;
+      lista.push({id:hashId(t.id+m.clave),at:m.at,tarea:t.id,
+        titulo:TXT_AVISO[m.clave]+": "+t.titulo,
+        texto:as.emoji+" "+as.nombre+" · "+CRIT[t.crit].e+" "+CRIT[t.crit].n+" · "+fmtFH.format(v)});
+    }
+  }
+  llamar("sincronizarAlarmas",JSON.stringify(lista));
+}
+
+/* ---------- Cabecera ---------- */
+function pintarCab(){
+  const h=new Date().getHours();
+  $("#saludo").textContent=(h<6?"Buenas noches 🌙":h<13?"Buenos días ☕":h<21?"Buenas tardes 🪴":"Buenas noches 🌙");
+  const fl=fmtLargo.format(new Date());$("#fecha").textContent=fl.charAt(0).toUpperCase()+fl.slice(1);
+  const n=abiertas().filter(t=>{const v=venceDe(t);return v&&v-Date.now()<DIA}).length;
+  $("#campana").innerHTML="🔔"+(n?"<b>"+n+"</b>":"");
+}
+
+/* ---------- Componentes ---------- */
+function filaTarea(t){
+  const as=asunto(t.asunto),e=etiquetaVence(t);
+  return `<button class="fila" data-abrir="${t.id}" style="--pin:var(${CRIT[t.crit].v})"><span class="punto"></span>
+  <span class="t">${esc(t.titulo)}<small>${as.emoji} ${esc(as.nombre)} · ${ESTADOS[t.estado].e} ${ESTADOS[t.estado].n}</small></span>
+  <span class="v ${e.mal?"mal":""}">${esc(e.txt)}</span></button>`;
+}
+function notaTarea(t){
+  const as=asunto(t.asunto),e=etiquetaVence(t),hechas=(t.sub||[]).filter(s=>s.ok).length;
+  return `<button class="nota pi-${as.color} ${t.estado==="cerr"?"cerrada":""}" data-abrir="${t.id}">
+    <span class="chinche" style="--pin:var(${CRIT[t.crit].v})"></span>
+    <span class="as">${as.emoji} ${esc(as.nombre)}</span>
+    <span class="nt">${esc(t.titulo)}</span>
+    <span class="pie"><span class="tag">${ESTADOS[t.estado].e} ${ESTADOS[t.estado].n}</span>
+      <span class="venc ${e.mal?"mal":""}">${e.mal?"⚠️":"📅"} ${esc(e.txt)}</span>
+      ${t.sub&&t.sub.length?`<span>☑️ ${hechas}/${t.sub.length}</span>`:""}
+      ${t.ejemplo?`<span title="Tarea de ejemplo">🧪</span>`:""}</span></button>`;
+}
+function bannerEjemplos(){
+  return S.tareas.some(t=>t.ejemplo)?`<div class="ejemplo">🧪<span>Estas tareas son de ejemplo para que veas cómo funciona.</span><button class="btn" data-acc="borrarEjemplos">Borrar ejemplos</button></div>`:"";
+}
+
+/* ---------- Escritorio ---------- */
+function vEscritorio(){
+  const ab=abiertas(),pend=ab.filter(t=>t.estado==="pend"),seg=ab.filter(t=>t.estado==="seg");
+  const cerr7=S.tareas.filter(t=>t.estado==="cerr"&&t.cerrada>Date.now()-7*DIA);
+  const venc=vencidas().sort(porVence);
+  const hoy=new Date();
+  const proximas=ab.filter(t=>{const v=venceDe(t);if(!v||v<hoy)return false;return difDias(v,hoy)<=1}).sort(porVence);
+  const semana=ab.filter(t=>{const v=venceDe(t);return v&&v>=hoy&&difDias(v,hoy)>1&&difDias(v,hoy)<=7}).sort(porVence);
+  // tira 14 días
+  let tira="";
+  for(let i=0;i<14;i++){
+    const d=inicioDia(hoy);d.setDate(d.getDate()+i);const n=ab.filter(t=>t.fecha===isoDia(d)).length;
+    tira+=`<button class="dia ${n>=3?"h3":n===2?"h2":n===1?"h1":""} ${i===0?"hoy":""}" data-dia="${isoDia(d)}" aria-label="${fmtLargo.format(d)}: ${n} tareas">${i===0?"hoy":fmtCorto.format(d).split(" ")[0].replace(",","")}<b>${d.getDate()}</b>${n?n+"✦":"·"}</button>`;
+  }
+  const porAsunto=S.asuntos.map(a=>{
+    const ts=S.tareas.filter(t=>t.asunto===a.id),c=ts.filter(t=>t.estado==="cerr").length,o=ts.length-c,vv=ts.filter(t=>t.estado!=="cerr"&&venceDe(t)&&venceDe(t)<hoy).length;
+    const tot=ts.length||1;
+    return `<div class="asu"><span style="font-size:20px">${a.emoji}</span><span class="nm">${esc(a.nombre)}</span><span class="ct">${o} abiertas · ${c} ✅</span>
+      <div class="barra"><i style="width:${c/tot*100}%;background:var(--cerr)"></i><i style="width:${(o-vv)/tot*100}%;background:var(--laton)"></i><i style="width:${vv/tot*100}%;background:var(--peligro)"></i></div></div>`}).join("");
+  return `${bannerEjemplos()}
+  <div class="estados">
+    <button class="pstat" data-filtro="pend"><span class="em">⏳</span><span class="n">${pend.length}</span><span class="l">Pendientes</span><span class="s">${pend.filter(t=>t.crit>=3).length} urgentes</span></button>
+    <button class="pstat" data-filtro="seg"><span class="em">👀</span><span class="n">${seg.length}</span><span class="l">Seguimiento</span><span class="s">en curso</span></button>
+    <button class="pstat" data-filtro="cerr"><span class="em">✅</span><span class="n">${cerr7.length}</span><span class="l">Cerradas</span><span class="s">últimos 7 días</span></button>
+  </div>
+  ${venc.length?`<div class="papel alerta"><span class="chinche"></span><h2>⚠️ Vencidas <small>${venc.length}</small></h2>${venc.map(filaTarea).join("")}</div>`:""}
+  <div class="papel"><span class="chinche" style="--pin:var(--c3)"></span><h2>📅 Hoy y mañana <small>${proximas.length}</small></h2>
+    ${proximas.length?proximas.map(filaTarea).join(""):`<p class="vacio">Nada urgente para hoy ni mañana. 🎉</p>`}</div>
+  ${semana.length?`<div class="papel"><span class="chinche" style="--pin:var(--c2)"></span><h2>🗓️ Resto de la semana <small>${semana.length}</small></h2>${semana.map(filaTarea).join("")}</div>`:""}
+  <div class="papel"><span class="chinche" style="--pin:var(--seg)"></span><h2>🧭 Próximos 14 días</h2><div class="tira">${tira}</div></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--cerr)"></span><h2>🗂️ Por asunto</h2>${porAsunto}
+    <div class="leyenda"><span><i style="background:var(--cerr)"></i>Cerradas</span><span><i style="background:var(--laton)"></i>Abiertas</span><span><i style="background:var(--peligro)"></i>Vencidas</span></div></div>`;
+}
+function porVence(a,b){const x=venceDe(a),y=venceDe(b);return (x?+x:9e15)-(y?+y:9e15)}
+
+/* ---------- Tablón ---------- */
+function vTablon(){
+  const cuenta=e=>e==="abiertas"?abiertas().length:e==="todas"?S.tareas.length:S.tareas.filter(t=>t.estado===e).length;
+  let ts=S.tareas.slice();
+  if(ui.filtroEstado==="abiertas")ts=ts.filter(t=>t.estado!=="cerr");
+  else if(ui.filtroEstado!=="todas")ts=ts.filter(t=>t.estado===ui.filtroEstado);
+  if(ui.filtroAsunto!=="todos")ts=ts.filter(t=>t.asunto===ui.filtroAsunto);
+  if(ui.filtroDia)ts=ts.filter(t=>t.fecha===ui.filtroDia);
+  if(ui.busca){const q=ui.busca.toLowerCase();ts=ts.filter(t=>(t.titulo+" "+t.notas).toLowerCase().includes(q))}
+  if(ui.orden==="venc")ts.sort(porVence);
+  else if(ui.orden==="crit")ts.sort((a,b)=>b.crit-a.crit||porVence(a,b));
+  else ts.sort((a,b)=>b.creada-a.creada);
+  const seg=(id,e,n)=>`<button data-estado="${id}" aria-pressed="${ui.filtroEstado===id}"><span>${e}</span>${n} ${cuenta(id)}</button>`;
+  return `<div class="segm">${seg("abiertas","📋","Abiertas")}${seg("pend","⏳","Pend.")}${seg("seg","👀","Segui.")}${seg("cerr","✅","Cerr.")}</div>
+  <div class="chips"><button class="chip" data-asunto="todos" aria-pressed="${ui.filtroAsunto==="todos"}">🗃️ Todos</button>
+    ${S.asuntos.map(a=>`<button class="chip" data-asunto="${a.id}" aria-pressed="${ui.filtroAsunto===a.id}">${a.emoji} ${esc(a.nombre)}</button>`).join("")}</div>
+  <div class="herr"><input id="busca" type="search" placeholder="🔍 Buscar tarea…" value="${esc(ui.busca)}" aria-label="Buscar">
+    <select id="orden" aria-label="Ordenar"><option value="venc" ${ui.orden==="venc"?"selected":""}>📅 Vencimiento</option><option value="crit" ${ui.orden==="crit"?"selected":""}>🔥 Criticidad</option><option value="rec" ${ui.orden==="rec"?"selected":""}>🆕 Recientes</option></select></div>
+  ${ui.filtroDia?`<div class="ejemplo">📅<span>Solo ${fmtLargo.format(new Date(ui.filtroDia+"T12:00"))}</span><button class="btn" data-acc="quitarDia">Quitar</button></div>`:""}
+  <div class="contador">${ts.length} ${ts.length===1?"tarea":"tareas"}</div>
+  <div class="notas" id="notas">${ts.length?ts.map(notaTarea).join(""):`<div class="papel" style="grid-column:1/-1"><p class="vacio">No hay tareas aquí. Pulsa ＋ para añadir una.</p></div>`}</div>`;
+}
+
+/* ---------- Métricas ---------- */
+function vMetricas(){
+  const ahora=Date.now(),hoy=new Date(),cerradas=S.tareas.filter(t=>t.estado==="cerr"&&t.cerrada);
+  const c7=cerradas.filter(t=>t.cerrada>ahora-7*DIA).length,c30=cerradas.filter(t=>t.cerrada>ahora-30*DIA).length;
+  const conFecha=cerradas.filter(t=>venceDe(t)),aTiempo=conFecha.filter(t=>t.cerrada<=+venceDe(t)).length;
+  const pctT=conFecha.length?Math.round(aTiempo/conFecha.length*100):null;
+  const media=cerradas.length?cerradas.reduce((s,t)=>s+(t.cerrada-t.creada),0)/cerradas.length/DIA:null;
+  // racha
+  const diasCierre=new Set(cerradas.map(t=>isoDia(new Date(t.cerrada))));
+  let racha=0,d=inicioDia(hoy);if(!diasCierre.has(isoDia(d)))d=new Date(+d-DIA);
+  while(diasCierre.has(isoDia(d))){racha++;d=new Date(+d-DIA)}
+  // récord en un día
+  const cnt={};cerradas.forEach(t=>{const k=isoDia(new Date(t.cerrada));cnt[k]=(cnt[k]||0)+1});
+  const record=Math.max(0,...Object.values(cnt));
+  // 8 semanas
+  const lunes=inicioDia(hoy);lunes.setDate(lunes.getDate()-((lunes.getDay()+6)%7));
+  const sem=[];for(let i=7;i>=0;i--){const a=new Date(lunes);a.setDate(a.getDate()-i*7);const z=new Date(a);z.setDate(z.getDate()+7);const ini=+a,fin=+z;
+    sem.push({ini,cre:S.tareas.filter(t=>t.creada>=ini&&t.creada<fin).length,cer:cerradas.filter(t=>t.cerrada>=ini&&t.cerrada<fin).length})}
+  const mx=Math.max(1,...sem.flatMap(s=>[s.cre,s.cer]));
+  const W=320,H=150,b=24,base=H-22,esc8=v=>v/mx*(base-14);
+  let svg=`<svg class="grafico" viewBox="0 0 ${W} ${H}" role="img" aria-label="Tareas creadas y cerradas por semana">`;
+  for(let g=0;g<=2;g++){const y=base-esc8(mx*g/2);svg+=`<line x1="${b}" x2="${W}" y1="${y}" y2="${y}" stroke="currentColor" stroke-opacity=".12"/><text x="${b-6}" y="${y+3}" text-anchor="end">${Math.round(mx*g/2)}</text>`}
+  sem.forEach((s,i)=>{const x=b+6+i*((W-b-6)/8),w=12;
+    svg+=`<rect x="${x}" y="${base-esc8(s.cre)}" width="${w}" height="${esc8(s.cre)}" rx="2" fill="var(--laton)"/>`;
+    svg+=`<rect x="${x+w+2}" y="${base-esc8(s.cer)}" width="${w}" height="${esc8(s.cer)}" rx="2" fill="var(--cerr)"/>`;
+    const dd=new Date(s.ini);svg+=`<text x="${x+w+1}" y="${H-6}" text-anchor="middle">${dd.getDate()}/${dd.getMonth()+1}</text>`});
+  svg+=`</svg>`;
+  // estado actual
+  const nP=S.tareas.filter(t=>t.estado==="pend").length,nS=S.tareas.filter(t=>t.estado==="seg").length,nC=S.tareas.filter(t=>t.estado==="cerr").length,tot=Math.max(1,nP+nS+nC);
+  // asuntos
+  const asu=S.asuntos.map(a=>{const ts=S.tareas.filter(t=>t.asunto===a.id),cc=ts.filter(t=>t.estado==="cerr"&&t.cerrada&&venceDe(t));
+    const tarde=cc.filter(t=>t.cerrada>+venceDe(t)).length;return {a,n:ts.length,ab:ts.filter(t=>t.estado!=="cerr").length,tarde,pct:cc.length?Math.round((cc.length-tarde)/cc.length*100):null}});
+  const mxA=Math.max(1,...asu.map(x=>x.n));
+  // criticidad abiertas
+  const crit=[4,3,2,1].map(c=>({c,n:abiertas().filter(t=>t.crit===c).length}));const mxC=Math.max(1,...crit.map(x=>x.n));
+  // día de la semana
+  const dsem=[0,0,0,0,0,0,0];cerradas.forEach(t=>dsem[(new Date(t.cerrada).getDay()+6)%7]++);const mxD=Math.max(1,...dsem),top=dsem.indexOf(Math.max(...dsem));
+  const nombresD=["L","M","X","J","V","S","D"],largosD=["lunes","martes","miércoles","jueves","viernes","sábado","domingo"];
+  // atascadas
+  const atasc=S.tareas.filter(t=>t.estado==="seg"&&t.segDesde&&ahora-t.segDesde>7*DIA);
+  const vieja=abiertas().sort((a,b)=>a.creada-b.creada)[0];
+  return `${bannerEjemplos()}
+  <div class="kpis">
+    <div class="kpi"><span class="em">✅</span><b>${c7}</b><span>cerradas en 7 días</span></div>
+    <div class="kpi"><span class="em">📆</span><b>${c30}</b><span>cerradas en 30 días</span></div>
+    <div class="kpi"><span class="em">🎯</span><b>${pctT===null?"—":pctT+"%"}</b><span>cerradas a tiempo</span></div>
+    <div class="kpi"><span class="em">⏱️</span><b>${media===null?"—":media.toFixed(1).replace(".",",")+" d"}</b><span>tiempo medio de cierre</span></div>
+    <div class="kpi"><span class="em">🔥</span><b>${racha} ${racha===1?"día":"días"}</b><span>racha cerrando tareas</span></div>
+    <div class="kpi"><span class="em">🏆</span><b>${record}</b><span>récord cerradas en un día</span></div>
+    <div class="kpi ancho"><span class="em" style="font-size:26px">⚠️</span><div><b style="color:var(--peligro)">${vencidas().length}</b><span>abiertas fuera de plazo de ${abiertas().length} abiertas</span></div></div>
+  </div>
+  <div class="papel"><span class="chinche" style="--pin:var(--laton)"></span><h2>📈 Creadas y cerradas por semana</h2>${svg}
+    <div class="leyenda"><span><i style="background:var(--laton)"></i>Creadas</span><span><i style="background:var(--cerr)"></i>Cerradas</span><span>Semanas desde el lunes</span></div></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--seg)"></span><h2>🧮 Estado de todas las tareas <small>${nP+nS+nC}</small></h2>
+    <div class="barra" style="height:18px;border-radius:9px"><i style="width:${nP/tot*100}%;background:var(--pend)"></i><i style="width:${nS/tot*100}%;background:var(--seg)"></i><i style="width:${nC/tot*100}%;background:var(--cerr)"></i></div>
+    <div class="leyenda"><span><i style="background:var(--pend)"></i>⏳ Pendientes ${nP}</span><span><i style="background:var(--seg)"></i>👀 Seguimiento ${nS}</span><span><i style="background:var(--cerr)"></i>✅ Cerradas ${nC}</span></div></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--c2)"></span><h2>🗂️ Asuntos</h2>
+    ${asu.map(x=>`<div class="asu"><span style="font-size:20px">${x.a.emoji}</span><span class="nm">${esc(x.a.nombre)}</span><span class="ct">${x.n} total · ${x.ab} abiertas</span>
+      <div class="barra"><i style="width:${x.n/mxA*100}%;background:var(--pi-${x.a.color});box-shadow:inset 0 0 0 1px var(--linea)"></i></div>
+      <span class="mini" style="grid-column:1/-1">${x.pct===null?"Sin cierres con fecha todavía":"🎯 "+x.pct+"% a tiempo · "+x.tarde+" con retraso"}</span></div>`).join("")}</div>
+  <div class="papel"><span class="chinche" style="--pin:var(--c4)"></span><h2>🚦 Abiertas por criticidad</h2>
+    ${crit.map(x=>`<div class="asu"><span>${CRIT[x.c].e}</span><span class="nm">${CRIT[x.c].n}</span><span class="ct">${x.n}</span><div class="barra"><i style="width:${x.n/mxC*100}%;background:var(${CRIT[x.c].v})"></i></div></div>`).join("")}</div>
+  <div class="papel"><span class="chinche" style="--pin:var(--cerr)"></span><h2>📅 Cierres por día de la semana</h2>
+    <div class="semana">${dsem.map((n,i)=>`<div class="${i===top&&n?"top":""}"><span>${n}</span><i style="height:${n/mxD*80}%"></i>${nombresD[i]}</div>`).join("")}</div>
+    <p class="mini">${cerradas.length?"Tu día más productivo es el <b>"+largosD[top]+"</b>.":"Cierra tareas para ver tu día más productivo."}</p></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--seg)"></span><h2>🐢 Atascadas en seguimiento <small>más de 7 días</small></h2>
+    ${atasc.length?atasc.map(filaTarea).join(""):`<p class="vacio">Ninguna tarea lleva más de una semana en seguimiento. 👌</p>`}
+    ${vieja?`<p class="mini" style="margin:10px 0 0">🕰️ Tarea abierta más antigua: <b>${esc(vieja.titulo)}</b>, creada hace ${Math.max(0,difDias(new Date(),new Date(vieja.creada)))} días.</p>`:""}</div>`;
+}
+
+/* ---------- Ajustes ---------- */
+function vAjustes(){
+  const notif=llamar("notificacionesActivas"),exactas=llamar("alarmasExactas"),ver=llamar("version");
+  const est=(v,ok,mal)=>v===null?`<span class="mini">Solo en el móvil</span>`:v?`<span class="estado-ok">✔ ${ok}</span>`:`<span class="estado-mal">✖ ${mal}</span>`;
+  return `<div class="papel"><span class="chinche" style="--pin:var(--c3)"></span><h2>🔔 Avisos</h2>
+    <div class="op"><div class="tx">Notificaciones<small>Necesarias para que te salten los avisos.</small></div>${est(notif,"Activas","Desactivadas")}${notif===false?`<button class="btn" data-acc="ajNotif">Activar</button>`:""}</div>
+    <div class="op"><div class="tx">Avisos a la hora exacta<small>Sin esto, Android puede retrasarlos unos minutos.</small></div>${est(exactas,"Permitidos","No permitidos")}${exactas===false?`<button class="btn" data-acc="ajExactas">Permitir</button>`:""}</div>
+    <div class="op"><div class="tx">Probar un aviso<small>Te llega una notificación ahora mismo.</small></div><button class="btn sec" data-acc="probar">Probar</button></div>
+    <div class="campo" style="margin-top:12px"><span class="lb">Avisos por defecto en tareas nuevas</span>
+      <div class="opciones">${AVISOS.map(a=>`<button class="chip" data-avdef="${a.id}" aria-pressed="${S.ajustes.avisos.includes(a.id)}">${a.n}</button>`).join("")}</div></div>
+    <div class="dos"><div class="campo"><label for="horaDia">Hora del aviso «el mismo día»</label><input type="time" id="horaDia" value="${S.ajustes.horaDia}"></div>
+      <div class="campo"><label for="horaDef">Hora de vencimiento por defecto</label><input type="time" id="horaDef" value="${S.ajustes.horaDef}"></div></div></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--c2)"></span><h2>🗂️ Asuntos</h2>
+    ${S.asuntos.map(a=>`<div class="op"><span style="font-size:22px">${a.emoji}</span><div class="tx"><b>${esc(a.nombre)}</b><small>${S.tareas.filter(t=>t.asunto===a.id).length} tareas</small></div><span class="tag pi-${a.color}" style="width:26px;height:26px;padding:0"></span><button class="btn sec" data-borrarasunto="${a.id}" aria-label="Borrar ${esc(a.nombre)}">🗑️</button></div>`).join("")}
+    <div class="campo" style="margin-top:12px"><span class="lb">Nuevo asunto</span>
+      <div class="add-sub"><input id="nuEmoji" maxlength="4" placeholder="🏷️" style="flex:0 0 64px;text-align:center" aria-label="Emoji"><input id="nuNombre" placeholder="Nombre del asunto" aria-label="Nombre del asunto"></div>
+      <div class="opciones" id="nuColor">${COLORES.map((c,i)=>`<button class="chip pi-${c}" data-color="${c}" aria-pressed="${i===4}" style="color:var(--nota-tinta)">${c}</button>`).join("")}</div>
+      <button class="btn" data-acc="nuevoAsunto">Añadir asunto</button></div></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--seg)"></span><h2>💾 Copia de seguridad</h2>
+    <p class="mini" style="margin-top:0">Las tareas se guardan en el móvil. Haz una copia de vez en cuando y guárdala en Drive o en WhatsApp.</p>
+    <div class="acciones"><button class="btn" data-acc="exportar">📤 Exportar</button><label class="btn sec" style="text-align:center">📥 Importar<input type="file" id="importar" accept="application/json,.json,text/plain" hidden></label></div></div>
+  <div class="papel"><span class="chinche"></span><h2>🧹 Limpieza</h2>
+    ${S.tareas.some(t=>t.ejemplo)?`<div class="op"><div class="tx">Borrar las tareas de ejemplo</div><button class="btn sec" data-acc="borrarEjemplos">Borrar</button></div>`:""}
+    <div class="op"><div class="tx">Borrar las tareas cerradas hace más de 90 días</div><button class="btn sec" data-acc="purgar">Borrar</button></div>
+    <div class="op"><div class="tx">Borrar todo y empezar de cero</div><button class="btn peligro" data-acc="pedirBorrarTodo">Borrar todo</button></div>
+    <div id="confTodo"></div></div>
+  <p class="contador" style="text-align:center">Mi Despacho ${ver?"v"+esc(ver):""} · hecho para ti 🪴</p>`;
+}
+
+/* ---------- Render ---------- */
+const VISTAS={escritorio:vEscritorio,tablon:vTablon,metricas:vMetricas,ajustes:vAjustes};
+function render(){
+  pintarCab();
+  $("#vista").innerHTML=VISTAS[ui.vista]();
+  document.querySelectorAll(".nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.ir===ui.vista?"page":"false"));
+  $("#fab").hidden=ui.vista==="ajustes";
+}
+function ir(v){ui.vista=v;render();window.scrollTo(0,0)}
+
+/* ---------- Hoja: detalle ---------- */
+function abrirHoja(html){$("#hojaIn").innerHTML='<div class="asa"></div>'+html;$("#hoja").hidden=false;$("#velo").hidden=false;$("#hoja").scrollTop=0}
+function cerrarHoja(){$("#hoja").hidden=true;$("#velo").hidden=true;ui.hoja=null;render()}
+function abrirTarea(id){
+  const t=S.tareas.find(x=>x.id===id);if(!t){aviso("Esa tarea ya no existe");return}
+  ui.hoja={tipo:"det",id};
+  const as=asunto(t.asunto),e=etiquetaVence(t),v=venceDe(t);
+  const fmtH=new Intl.DateTimeFormat("es-ES",{day:"numeric",month:"short",hour:"2-digit",minute:"2-digit"});
+  abrirHoja(`<h3>${esc(t.titulo)}</h3>
+  <div class="det-tags"><span class="tag pi-${as.color}" style="color:var(--nota-tinta)">${as.emoji} ${esc(as.nombre)}</span><span class="tag">${CRIT[t.crit].e} ${CRIT[t.crit].n}</span>
+    <span class="tag" ${e.mal?'style="color:var(--peligro)"':""}>📅 ${v?esc(fmtLargo.format(v))+(t.hora?" · "+t.hora:""):"Sin fecha"}</span>
+    ${(t.avisos||[]).length&&v?`<span class="tag">🔔 ${t.avisos.map(a=>AVISOS.find(x=>x.id===a)?.n).join(", ")}</span>`:""}</div>
+  <div class="campo"><span class="lb">Cambiar estado</span></div>
+  <div class="cambio">${Object.entries(ESTADOS).map(([k,x])=>`<button data-e="${k}" data-cambiar="${k}" aria-pressed="${t.estado===k}"><span>${x.e}</span>${x.n}</button>`).join("")}</div>
+  ${t.notas?`<div class="det-notas">${esc(t.notas)}</div>`:""}
+  <div class="campo"><span class="lb">Subtareas ${t.sub.length?`(${t.sub.filter(s=>s.ok).length}/${t.sub.length})`:""}</span>
+    ${t.sub.map((s,i)=>`<label class="sub ${s.ok?"ok":""}"><input type="checkbox" data-subok="${i}" ${s.ok?"checked":""}><span>${esc(s.t)}</span></label>`).join("")}
+    <div class="add-sub"><input id="detSub" placeholder="Añadir subtarea…" aria-label="Nueva subtarea"><button class="btn sec" data-acc="detAddSub">＋</button></div></div>
+  <div class="campo"><span class="lb">Historial</span></div>
+  <ul class="hist">${t.hist.slice().reverse().map(h=>`<li>${ESTADOS[h.e]?ESTADOS[h.e].e+" "+ESTADOS[h.e].n:esc(h.e)} · ${fmtH.format(new Date(h.at))}</li>`).join("")}</ul>
+  <div class="acciones"><button class="btn sec" data-acc="editar">✏️ Editar</button><button class="btn sec" data-acc="duplicar">📄 Duplicar</button><button class="btn peligro" data-acc="pedirBorrar">🗑️</button></div>
+  <div id="confBorrar"></div>`);
+}
+function cambiarEstado(t,e){
+  if(t.estado===e)return;
+  t.estado=e;t.hist.push({e,at:Date.now()});
+  t.cerrada=e==="cerr"?Date.now():null;
+  t.segDesde=e==="seg"?Date.now():null;
+  guardar();vibrar();
+  aviso(e==="cerr"?"✅ ¡Tarea cerrada! Bien hecho":e==="seg"?"👀 En seguimiento":"⏳ Vuelve a pendiente");
+}
+
+/* ---------- Hoja: formulario ---------- */
+let borrador=null;
+function abrirFormulario(t){
+  const nuevo=!t;
+  const man=new Date(Date.now()+DIA);
+  borrador=t?JSON.parse(JSON.stringify(t)):{id:nid(),titulo:"",asunto:ui.filtroAsunto!=="todos"?ui.filtroAsunto:S.asuntos[0]?.id,crit:2,estado:"pend",
+    fecha:ui.filtroDia||isoDia(man),hora:S.ajustes.horaDef,avisos:S.ajustes.avisos.slice(),notas:"",sub:[],creada:Date.now(),cerrada:null,segDesde:null,hist:[]};
+  ui.hoja={tipo:"form",nuevo};
+  pintarFormulario();
+  if(nuevo)setTimeout(()=>$("#fTitulo")?.focus(),250);
+}
+function pintarFormulario(){
+  const b=borrador,nuevo=ui.hoja.nuevo;
+  abrirHoja(`<h3>${nuevo?"📝 Nueva tarea":"✏️ Editar tarea"}</h3>
+  <div class="campo"><label for="fTitulo">Qué hay que hacer</label><input id="fTitulo" maxlength="140" placeholder="Ej.: Presentar el modelo 303" value="${esc(b.titulo)}"></div>
+  <div class="campo"><span class="lb">Asunto</span><div class="opciones">${S.asuntos.map(a=>`<button class="chip" data-fas="${a.id}" aria-pressed="${b.asunto===a.id}">${a.emoji} ${esc(a.nombre)}</button>`).join("")}</div></div>
+  <div class="campo"><span class="lb">Criticidad</span><div class="opciones">${[4,3,2,1].map(c=>`<button class="chip" data-fcrit="${c}" aria-pressed="${b.crit===c}">${CRIT[c].e} ${CRIT[c].n}</button>`).join("")}</div></div>
+  <div class="dos"><div class="campo"><label for="fFecha">Vence el</label><input type="date" id="fFecha" value="${b.fecha||""}"></div>
+    <div class="campo"><label for="fHora">A las</label><input type="time" id="fHora" value="${b.hora||""}"></div></div>
+  <div class="campo"><span class="lb">Avisarme</span><div class="opciones">${AVISOS.map(a=>`<button class="chip" data-fav="${a.id}" aria-pressed="${b.avisos.includes(a.id)}">🔔 ${a.n}</button>`).join("")}</div></div>
+  <div class="campo"><span class="lb">Estado</span><div class="opciones">${Object.entries(ESTADOS).map(([k,x])=>`<button class="chip" data-fest="${k}" aria-pressed="${b.estado===k}">${x.e} ${x.n}</button>`).join("")}</div></div>
+  <div class="campo"><label for="fNotas">Notas</label><textarea id="fNotas" placeholder="Detalles, teléfonos, referencias…">${esc(b.notas)}</textarea></div>
+  <div class="campo"><span class="lb">Subtareas</span>
+    ${b.sub.map((s,i)=>`<div class="sub"><span>☑️ ${esc(s.t)}</span><button class="x" data-fsubx="${i}" aria-label="Quitar">✕</button></div>`).join("")}
+    <div class="add-sub"><input id="fSub" placeholder="Añadir paso…" aria-label="Nueva subtarea"><button class="btn sec" data-acc="fAddSub">＋</button></div></div>
+  <div class="acciones"><button class="btn sec" data-acc="cancelarForm">Cancelar</button><button class="btn ok" data-acc="guardarForm">💾 Guardar</button></div>`);
+}
+function leerForm(){
+  if(!$("#fTitulo"))return;
+  borrador.titulo=$("#fTitulo").value.trim();borrador.fecha=$("#fFecha").value;borrador.hora=$("#fHora").value;borrador.notas=$("#fNotas").value;
+}
+function guardarForm(){
+  leerForm();const b=borrador;
+  if(!b.titulo){aviso("Escribe qué hay que hacer");$("#fTitulo").focus();return}
+  const idx=S.tareas.findIndex(t=>t.id===b.id);
+  if(idx<0){b.hist=[{e:b.estado,at:Date.now()}];if(b.estado==="cerr")b.cerrada=Date.now();if(b.estado==="seg")b.segDesde=Date.now();S.tareas.push(b)}
+  else{const prev=S.tareas[idx];
+    if(prev.estado!==b.estado){b.hist.push({e:b.estado,at:Date.now()});b.cerrada=b.estado==="cerr"?Date.now():null;b.segDesde=b.estado==="seg"?Date.now():null}
+    b.ejemplo=false;S.tareas[idx]=b}
+  guardar();vibrar();
+  const v=venceDe(b),prox=momentosAviso(b).filter(m=>m.at>Date.now()).sort((x,y)=>x.at-y.at)[0];
+  aviso(idx<0?"📌 Tarea clavada en el tablón":"💾 Cambios guardados");
+  if(prox&&b.estado!=="cerr")setTimeout(()=>aviso("🔔 Te aviso el "+fmtFH.format(new Date(prox.at))),2500);
+  if(!llamar("notificacionesActivas")&&A)llamar("pedirPermisos");
+  ui.hoja=null;$("#hoja").hidden=true;$("#velo").hidden=true;render();
+}
+
+/* ---------- Eventos ---------- */
+document.addEventListener("click",ev=>{
+  const el=ev.target.closest("button,[data-abrir],label.sub");if(!el)return;
+  const d=el.dataset;
+  if(d.ir){ui.filtroDia=null;ir(d.ir);return}
+  if(d.abrir){abrirTarea(d.abrir);return}
+  if(d.filtro){ui.filtroEstado=d.filtro;ui.filtroDia=null;ir("tablon");return}
+  if(d.dia){ui.filtroDia=d.dia;ui.filtroEstado="todas";ir("tablon");return}
+  if(d.estado){ui.filtroEstado=d.estado;render();return}
+  if(d.asunto){ui.filtroAsunto=d.asunto;render();return}
+  if(d.cambiar){const t=S.tareas.find(x=>x.id===ui.hoja.id);cambiarEstado(t,d.cambiar);t.ejemplo=t.ejemplo&&true;abrirTarea(t.id);render();return}
+  // formulario
+  if(d.fas){leerForm();borrador.asunto=d.fas;pintarFormulario();return}
+  if(d.fcrit){leerForm();borrador.crit=+d.fcrit;pintarFormulario();return}
+  if(d.fest){leerForm();borrador.estado=d.fest;pintarFormulario();return}
+  if(d.fav){leerForm();const a=borrador.avisos,i=a.indexOf(d.fav);i<0?a.push(d.fav):a.splice(i,1);pintarFormulario();return}
+  if(d.fsubx){leerForm();borrador.sub.splice(+d.fsubx,1);pintarFormulario();return}
+  if(d.avdef){const a=S.ajustes.avisos,i=a.indexOf(d.avdef);i<0?a.push(d.avdef):a.splice(i,1);guardar();render();return}
+  if(d.color){document.querySelectorAll("#nuColor .chip").forEach(c=>c.setAttribute("aria-pressed",c===el));return}
+  if(d.borrarasunto){const n=S.tareas.filter(t=>t.asunto===d.borrarasunto).length;
+    if(n){aviso("Tiene "+n+" tareas: muévelas antes de borrarlo");return}
+    if(S.asuntos.length<=1){aviso("Necesitas al menos un asunto");return}
+    S.asuntos=S.asuntos.filter(a=>a.id!==d.borrarasunto);guardar();render();aviso("🗑️ Asunto borrado");return}
+  if(d.acc)acciones[d.acc]?.(el);
+});
+const acciones={
+  borrarEjemplos(){S.tareas=S.tareas.filter(t=>!t.ejemplo);guardar();render();aviso("🧹 Ejemplos borrados. ¡Tu despacho está listo!")},
+  quitarDia(){ui.filtroDia=null;ui.filtroEstado="abiertas";render()},
+  editar(){const t=S.tareas.find(x=>x.id===ui.hoja.id);abrirFormulario(t)},
+  duplicar(){const t=S.tareas.find(x=>x.id===ui.hoja.id);const c=JSON.parse(JSON.stringify(t));
+    Object.assign(c,{id:nid(),titulo:t.titulo+" (copia)",estado:"pend",creada:Date.now(),cerrada:null,segDesde:null,hist:[],ejemplo:false,sub:c.sub.map(s=>({t:s.t,ok:false}))});
+    borrador=c;ui.hoja={tipo:"form",nuevo:true};pintarFormulario()},
+  pedirBorrar(){$("#confBorrar").innerHTML=`<div class="confirma">¿Borrar esta tarea para siempre?<div class="acciones"><button class="btn sec" data-acc="noBorrar">No</button><button class="btn peligro" data-acc="siBorrar">Sí, borrar</button></div></div>`},
+  noBorrar(){$("#confBorrar").innerHTML=""},
+  siBorrar(){S.tareas=S.tareas.filter(t=>t.id!==ui.hoja.id);guardar();cerrarHoja();aviso("🗑️ Tarea borrada")},
+  detAddSub(){const i=$("#detSub"),v=i.value.trim();if(!v)return;const t=S.tareas.find(x=>x.id===ui.hoja.id);t.sub.push({t:v,ok:false});guardar();abrirTarea(t.id);setTimeout(()=>$("#detSub")?.focus(),50)},
+  fAddSub(){leerForm();const v=$("#fSub").value.trim();if(!v)return;borrador.sub.push({t:v,ok:false});pintarFormulario();setTimeout(()=>$("#fSub")?.focus(),50)},
+  cancelarForm(){if(!ui.hoja.nuevo&&S.tareas.some(t=>t.id===borrador.id))abrirTarea(borrador.id);else cerrarHoja()},
+  guardarForm,
+  ajNotif(){llamar("pedirPermisos");setTimeout(render,1500)},
+  ajExactas(){llamar("abrirAjustesAlarmas")},
+  probar(){if(!A){aviso("La prueba funciona en el móvil");return}if(!llamar("notificacionesActivas")){llamar("pedirPermisos");return}llamar("probarAviso");aviso("🔔 Aviso de prueba enviado")},
+  nuevoAsunto(){const n=$("#nuNombre").value.trim(),e=$("#nuEmoji").value.trim()||"🏷️",c=document.querySelector('#nuColor [aria-pressed="true"]')?.dataset.color||"naranja";
+    if(!n){aviso("Ponle nombre al asunto");return}S.asuntos.push({id:nid(),nombre:n,emoji:e,color:c});guardar();render();aviso("🗂️ Asunto «"+n+"» añadido")},
+  exportar(){const txt=JSON.stringify({app:"mi-despacho",fecha:new Date().toISOString(),datos:S});
+    if(A){llamar("compartir",txt,"mi-despacho-"+isoDia(new Date())+".json")}else{navigator.clipboard?.writeText(txt).then(()=>aviso("Copia guardada en el portapapeles"),()=>aviso("No se pudo copiar"))}},
+  purgar(){const antes=S.tareas.length;S.tareas=S.tareas.filter(t=>!(t.estado==="cerr"&&t.cerrada<Date.now()-90*DIA));guardar();render();aviso("🧹 "+(antes-S.tareas.length)+" tareas antiguas borradas")},
+  pedirBorrarTodo(){$("#confTodo").innerHTML=`<div class="confirma">Se borrarán todas las tareas y asuntos. ¿Seguro? Haz antes una copia si la necesitas.<div class="acciones"><button class="btn sec" data-acc="noTodo">No</button><button class="btn peligro" data-acc="siTodo">Sí, borrar todo</button></div></div>`},
+  noTodo(){$("#confTodo").innerHTML=""},
+  siTodo(){S={tareas:[],asuntos:ASUNTOS_BASE.slice(),ajustes:S.ajustes};guardar();ir("escritorio");aviso("Despacho vacío y listo")}
+};
+document.addEventListener("change",ev=>{
+  const el=ev.target;
+  if(el.dataset.subok!==undefined){const t=S.tareas.find(x=>x.id===ui.hoja.id);t.sub[+el.dataset.subok].ok=el.checked;guardar();vibrar();abrirTarea(t.id);return}
+  if(el.id==="orden"){ui.orden=el.value;render();return}
+  if(el.id==="horaDia"&&el.value){S.ajustes.horaDia=el.value;guardar();aviso("Hora guardada");return}
+  if(el.id==="horaDef"&&el.value){S.ajustes.horaDef=el.value;guardar();aviso("Hora guardada");return}
+  if(el.id==="importar"&&el.files[0]){const r=new FileReader();r.onload=()=>{
+    try{const j=JSON.parse(r.result),d=j.datos||j;if(!Array.isArray(d.tareas))throw 0;
+      S={tareas:d.tareas,asuntos:d.asuntos||ASUNTOS_BASE.slice(),ajustes:Object.assign(S.ajustes,d.ajustes||{})};guardar();ir("escritorio");aviso("📥 "+S.tareas.length+" tareas recuperadas")}
+    catch(e){aviso("Ese archivo no es una copia de Mi Despacho")}};r.readAsText(el.files[0])}
+});
+let buscaT;
+document.addEventListener("input",ev=>{if(ev.target.id==="busca"){clearTimeout(buscaT);buscaT=setTimeout(()=>{ui.busca=ev.target.value;const pos=ev.target.selectionStart;render();const b=$("#busca");b.focus();b.setSelectionRange(pos,pos)},250)}});
+document.addEventListener("keydown",ev=>{if(ev.key==="Enter"){if(ev.target.id==="fSub"){ev.preventDefault();acciones.fAddSub()}else if(ev.target.id==="detSub"){ev.preventDefault();acciones.detAddSub()}}});
+$("#fab").addEventListener("click",()=>abrirFormulario(null));
+$("#velo").addEventListener("click",()=>{if(ui.hoja?.tipo==="form")return;cerrarHoja()});
+$("#campana").addEventListener("click",()=>{ui.filtroEstado="abiertas";ui.orden="venc";ui.filtroDia=null;ir("tablon")});
+
+/* Botón atrás de Android: devuelve true si lo ha gestionado la app */
+window.manejarAtras=function(){
+  if(ui.hoja){if(ui.hoja.tipo==="form")acciones.cancelarForm();else cerrarHoja();return true}
+  if(ui.vista!=="escritorio"){ui.filtroDia=null;ir("escritorio");return true}
+  return false;
+};
+window.abrirTarea=abrirTarea;
+window.alVolver=function(){render();sincronizarAlarmas()};
+
+S=cargar();
+render();
+sincronizarAlarmas();
+setInterval(pintarCab,60000);
+(function(){const t=llamar("tareaInicial");if(t)abrirTarea(t)})();
+if(A&&!localStorage.getItem("despacho.permisos")){try{localStorage.setItem("despacho.permisos","1")}catch(e){}setTimeout(()=>llamar("pedirPermisos"),800)}
+</script>
+</body>
+</html>

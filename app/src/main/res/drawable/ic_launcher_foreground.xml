@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Post-it amarillo clavado con chincheta roja y dos renglones -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#33000000" android:pathData="M36,38 L76,36 L78,76 L40,78 Z"/>
+    <path android:fillColor="#FFFFE68C" android:pathData="M33,35 L73,33 L75,73 L37,75 Z"/>
+    <path android:fillColor="#FFE9C964" android:pathData="M62,73.5 L75,73 L74.5,62 Z"/>
+    <path android:fillColor="#FF8A6A3A" android:pathData="M41,49 L66,48 L66.1,51 L41.1,52 Z"/>
+    <path android:fillColor="#FF8A6A3A" android:pathData="M41.5,58 L62,57.2 L62.1,60.2 L41.6,61 Z"/>
+    <path android:fillColor="#FF2E7D32" android:pathData="M41,66 L46,71 L56,62 L54,60 L46,67 L43,64 Z"/>
+    <path android:fillColor="#FFD23A2C" android:pathData="M53,30m-6,0a6,6 0,1 1,12 0a6,6 0,1 1,-12 0"/>
+    <path android:fillColor="#88FFFFFF" android:pathData="M51,28m-2,0a2,2 0,1 1,4 0a2,2 0,1 1,-4 0"/>
+</vector>

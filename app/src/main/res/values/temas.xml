@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="madera">#FF3B2618</color>
+    <color name="corcho">#FFCAA074</color>
+    <color name="laton">#FFC9973F</color>
+    <style name="Tema" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/madera</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/madera</item>
+        <item name="android:colorAccent">@color/laton</item>
+    </style>
+</resources>
