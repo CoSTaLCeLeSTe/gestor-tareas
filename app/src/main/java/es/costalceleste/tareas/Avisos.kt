@@ -138,5 +138,6 @@ class AvisoReceiver : BroadcastReceiver() {
 class ArranqueReceiver : BroadcastReceiver() {
     override fun onReceive(ctx: Context, intent: Intent) {
         Avisos.reprogramar(ctx)
+        InformeDiario.programar(ctx)
     }
 }

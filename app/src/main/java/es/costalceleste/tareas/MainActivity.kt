@@ -30,6 +30,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var web: WebView
     private var archivoCallback: ValueCallback<Array<Uri>>? = null
     private var tareaPendiente: String = ""
+    private var vistaPendiente: String = ""
 
     private val elegirArchivo =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { r ->
@@ -45,6 +46,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Avisos.crearCanal(this)
         tareaPendiente = intent?.getStringExtra("tarea") ?: ""
+        vistaPendiente = intent?.getStringExtra("vista") ?: ""
+        InformeDiario.programar(this)
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         val raiz = FrameLayout(this)
@@ -108,6 +111,8 @@ class MainActivity : ComponentActivity() {
         super.onNewIntent(intent)
         val t = intent.getStringExtra("tarea")
         if (!t.isNullOrEmpty()) web.evaluateJavascript("abrirTarea(${JSONObject.quote(t)})", null)
+        val v = intent.getStringExtra("vista")
+        if (!v.isNullOrEmpty()) web.evaluateJavascript("window.irA && irA(${JSONObject.quote(v)})", null)
     }
 
     override fun onResume() {
@@ -189,6 +194,77 @@ class MainActivity : ComponentActivity() {
                     val i = Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, texto)
                     startActivity(Intent.createChooser(i, "Guardar copia de Mi Despacho"))
                 }
+            }
+        }
+
+        @JavascriptInterface
+        fun vistaInicial(): String {
+            val v = vistaPendiente
+            vistaPendiente = ""
+            return v
+        }
+
+        /** Guarda un resumen de las tareas abiertas para que el informe diario funcione con la app cerrada. */
+        @JavascriptInterface
+        fun guardarInstantanea(json: String) {
+            getSharedPreferences("informe", MODE_PRIVATE).edit().putString("instantanea", json).apply()
+        }
+
+        @JavascriptInterface
+        fun configurarInforme(activo: Boolean, hora: String) {
+            getSharedPreferences("informe", MODE_PRIVATE).edit()
+                .putBoolean("activo", activo).putString("hora", hora).apply()
+            InformeDiario.programar(applicationContext)
+        }
+
+        @JavascriptInterface
+        fun probarInforme() {
+            Thread { InformeDiario.mostrar(applicationContext) }.start()
+        }
+
+        @JavascriptInterface
+        fun configurarCorreo(url: String) {
+            getSharedPreferences("informe", MODE_PRIVATE).edit().putString("correo", url).apply()
+        }
+
+        /** Descarga el resumen de Gmail desde el script del usuario y lo devuelve a la interfaz. */
+        @JavascriptInterface
+        fun leerCorreo(url: String) {
+            Thread {
+                val js = try {
+                    val cuerpo = Red.get(url, 25000)
+                    "recibirCorreo(true," + JSONObject.quote(cuerpo) + ")"
+                } catch (e: Exception) {
+                    "recibirCorreo(false," + JSONObject.quote(e.message ?: "sin conexión") + ")"
+                }
+                web.post { web.evaluateJavascript(js, null) }
+            }.start()
+        }
+
+        @JavascriptInterface
+        fun abrirEnlace(url: String) {
+            runOnUiThread {
+                try {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                } catch (e: Exception) { }
+            }
+        }
+
+        @JavascriptInterface
+        fun copiar(texto: String): Boolean = try {
+            val cm = getSystemService(android.content.ClipboardManager::class.java)
+            cm.setPrimaryClip(android.content.ClipData.newPlainText("Mi Despacho", texto))
+            true
+        } catch (e: Exception) { false }
+
+        @JavascriptInterface
+        fun compartirTexto(texto: String, asunto: String) {
+            runOnUiThread {
+                val i = Intent(Intent.ACTION_SEND)
+                    .setType("text/plain")
+                    .putExtra(Intent.EXTRA_SUBJECT, asunto)
+                    .putExtra(Intent.EXTRA_TEXT, texto)
+                startActivity(Intent.createChooser(i, asunto))
             }
         }
 

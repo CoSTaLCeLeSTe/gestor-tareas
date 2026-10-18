@@ -173,10 +173,10 @@ main{max-width:560px;margin:0 auto;padding:14px 16px 120px;display:flex;flex-dir
 /* Botón añadir y navegación */
 .fab{position:fixed;right:max(18px,env(safe-area-inset-right,0px));bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:30;width:62px;height:62px;border-radius:50%;border:0;
   background:radial-gradient(circle at 35% 30%,var(--laton-2),var(--laton) 60%,#9b6e22);color:#3b2410;font:600 34px/1 var(--f-titulo);box-shadow:0 6px 14px rgba(0,0,0,.45)}
-.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;display:grid;grid-template-columns:repeat(4,1fr);
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:25;display:grid;grid-template-columns:repeat(5,1fr);
   padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px));
   background:repeating-linear-gradient(90deg,var(--madera) 0 22px,var(--veta) 22px 24px,var(--madera) 24px 51px,var(--madera-2) 51px 52px);box-shadow:0 -4px 10px -4px rgba(0,0,0,.5)}
-.nav button{border:0;background:none;color:#e7d2b0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 0;font-size:11.5px;font-weight:800;border-radius:10px}
+.nav button{border:0;background:none;color:#e7d2b0;display:flex;flex-direction:column;align-items:center;gap:2px;padding:5px 0;font-size:11px;min-width:0;font-weight:800;border-radius:10px}
 .nav button span{font-size:22px;line-height:1;filter:saturate(.6)}
 .nav button[aria-current="page"]{color:#fff6e3;background:rgba(255,220,160,.16)}
 .nav button[aria-current="page"] span{filter:none}
@@ -222,6 +222,44 @@ main{max-width:560px;margin:0 auto;padding:14px 16px 120px;display:flex;flex-dir
 .confirma{background:var(--pi-rosa);color:var(--nota-tinta);border-radius:10px;padding:10px 12px;font-weight:700;margin-top:10px}
 .confirma .acciones{margin-top:8px}
 
+/* Informe */
+.parte{background:var(--papel);padding:16px 14px 14px}
+.parte .titular{font:600 23px/1.15 var(--f-titulo);margin:8px 0 6px;text-wrap:balance}
+.entradilla{margin:0 0 10px;font-size:15px;color:var(--tinta-2);text-wrap:pretty}
+.cifras{display:flex;flex-wrap:wrap;gap:6px}
+.cifras .tag{background:var(--papel-2);color:var(--tinta);padding:5px 10px;font-size:13px}
+.cita{display:grid;grid-template-columns:62px 1fr;gap:10px;padding:9px 0;border-top:1px dashed var(--linea);align-items:start}
+.cita:first-of-type{border-top:0}
+.cita .hr{font:600 15px/1.15 var(--f-titulo);font-variant-numeric:tabular-nums}
+.cita .hr small{display:block;font:700 11px var(--f-texto);color:var(--tinta-2)}
+.cita .qu{min-width:0}
+.cita .qu b{display:block;word-break:break-word}
+.cita .qu small{display:block;font-size:12.5px;color:var(--tinta-2);word-break:break-word}
+.cita .cal{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:0}
+.cita.pasada{opacity:.5}
+.cita.ahora{background:linear-gradient(90deg,rgba(201,151,63,.22),transparent);border-radius:8px;padding-left:6px;margin-left:-6px}
+.correo{background:var(--papel);border-radius:6px;box-shadow:var(--sombra);padding:12px;display:flex;flex-direction:column;gap:7px;min-width:0;position:relative}
+.correo.con{box-shadow:inset 4px 0 0 var(--c3),var(--sombra)}
+.c-cab{display:flex;align-items:center;gap:10px;min-width:0}
+.av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:600 16px var(--f-titulo);color:var(--nota-tinta)}
+.c-de{flex:1;min-width:0}
+.c-de b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-de small{display:block;font-size:12px;color:var(--tinta-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-as{font:500 16px/1.25 var(--f-titulo);word-break:break-word}
+.c-tx{margin:0;font-size:13.5px;color:var(--tinta-2);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.c-tags{display:flex;flex-wrap:wrap;gap:5px}
+.c-tags .tag{background:var(--papel-2);color:var(--tinta)}
+.c-acc{display:flex;gap:8px}
+.c-acc .btn{padding:9px 10px;font-size:13.5px}
+.c-acc .btn:first-child{flex:1}
+.lista-correo{display:flex;flex-direction:column;gap:12px}
+.pasos{margin:0 0 14px;padding:0;list-style:none;counter-reset:paso;display:flex;flex-direction:column;gap:10px}
+.pasos li{counter-increment:paso;display:grid;grid-template-columns:28px 1fr;gap:10px;font-size:14.5px}
+.pasos li::before{content:counter(paso);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--laton);color:#3b2410;font:600 15px var(--f-titulo)}
+.pasos b{font-weight:800}
+.nota-seg{background:var(--pi-amarillo);color:var(--nota-tinta);border-radius:10px;padding:10px 12px;font-size:13px;font-weight:700;margin-bottom:14px}
+.interruptor{border:0;border-radius:999px;padding:8px 14px;font-weight:800;font-size:13px;background:var(--papel-2);color:var(--tinta-2);box-shadow:inset 0 0 0 1.5px var(--linea)}
+.interruptor[aria-pressed="true"]{background:var(--cerr);color:#fff;box-shadow:none}
 .toast{position:fixed;left:50%;bottom:calc(160px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:60;background:var(--madera-2);color:#fff4df;
   padding:10px 16px;border-radius:999px;font-weight:800;font-size:14px;box-shadow:0 6px 16px rgba(0,0,0,.4);max-width:90%;text-align:center}
 .mini{font-size:12.5px;color:var(--tinta-2)}
@@ -235,7 +273,7 @@ main{max-width:560px;margin:0 auto;padding:14px 16px 120px;display:flex;flex-dir
       <div class="saludo" id="saludo">Buenas</div>
       <div class="fecha" id="fecha"></div>
     </div>
-    <button class="campana" id="campana" aria-label="Tareas que vencen en las próximas 24 horas">🔔</button>
+    <button class="campana" id="campana" aria-label="Abrir el informe del día">🔔</button>
   </div>
 </header>
 
@@ -246,6 +284,7 @@ main{max-width:560px;margin:0 auto;padding:14px 16px 120px;display:flex;flex-dir
 <nav class="nav" aria-label="Secciones">
   <button data-ir="escritorio" aria-current="page"><span>🗂️</span>Escritorio</button>
   <button data-ir="tablon"><span>📌</span>Tablón</button>
+  <button data-ir="informe"><span>📰</span>Informe</button>
   <button data-ir="metricas"><span>📊</span>Métricas</button>
   <button data-ir="ajustes"><span>⚙️</span>Ajustes</button>
 </nav>
@@ -254,6 +293,94 @@ main{max-width:560px;margin:0 auto;padding:14px 16px 120px;display:flex;flex-dir
 <section class="hoja" id="hoja" hidden role="dialog" aria-modal="true"><div class="hoja-in" id="hojaIn"></div></section>
 <div class="toast" id="toast" hidden></div>
 
+<script type="text/plain" id="codigoGS">// Mi Despacho · Gmail y Google Calendar
+// Devuelve a la app un resumen de tus correos recientes (sin leer y destacados)
+// y tus citas de hoy y mañana. Solo lee: no envía, no borra y no marca nada.
+var CLAVE = '__CLAVE__';
+var DIAS = 7;
+
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  if (p.clave !== CLAVE) return salida({ ok: false, error: 'clave' });
+  var r = { ok: true, generado: Date.now(), correos: [], eventos: [], avisos: [] };
+  try { r.correos = correos(); r.sinLeerBandeja = GmailApp.getInboxUnreadCount(); }
+  catch (err) { r.avisos.push('gmail: ' + err); }
+  try { r.eventos = agenda(); }
+  catch (err) { r.avisos.push('calendar: ' + err); }
+  return salida(r);
+}
+
+function correos() {
+  var consultas = [
+    ['in:inbox is:unread newer_than:' + DIAS + 'd -category:promotions -category:social -category:forums', 30],
+    ['is:starred newer_than:30d', 15]
+  ];
+  var vistos = {};
+  var out = [];
+  consultas.forEach(function (c) {
+    GmailApp.search(c[0], 0, c[1]).forEach(function (hilo) {
+      var id = hilo.getId();
+      if (vistos[id]) return;
+      vistos[id] = true;
+      var msgs = hilo.getMessages();
+      var m = msgs[msgs.length - 1];
+      var cuerpo = (m.getPlainBody() || '').replace(/\s+/g, ' ').trim();
+      var de = m.getFrom() || '';
+      var email = (de.match(/<([^>]+)>/) || [null, de])[1];
+      out.push({
+        id: m.getId(),
+        hilo: id,
+        de: de.replace(/<[^>]*>/, '').replace(/"/g, '').trim() || email,
+        email: email,
+        asunto: hilo.getFirstMessageSubject() || '(sin asunto)',
+        texto: cuerpo.slice(0, 700),
+        fecha: m.getDate().getTime(),
+        sinLeer: hilo.isUnread(),
+        destacado: hilo.hasStarredMessages(),
+        importante: hilo.isImportant(),
+        mensajes: msgs.length
+      });
+    });
+  });
+  return out;
+}
+
+function agenda() {
+  var ini = new Date();
+  ini.setHours(0, 0, 0, 0);
+  ini.setDate(ini.getDate() - 1);
+  var fin = new Date(ini.getTime());
+  fin.setDate(fin.getDate() + 4);
+  var out = [];
+  CalendarApp.getAllCalendars().forEach(function (cal) {
+    try { if (cal.isHidden() || !cal.isSelected()) return; } catch (err) {}
+    cal.getEvents(ini, fin).forEach(function (ev) {
+      try { if (ev.getMyStatus() === CalendarApp.GuestStatus.NO) return; } catch (err) {}
+      out.push({
+        titulo: ev.getTitle() || '(sin título)',
+        inicio: ev.getStartTime().getTime(),
+        fin: ev.getEndTime().getTime(),
+        todoElDia: ev.isAllDayEvent(),
+        lugar: ev.getLocation() || '',
+        calendario: cal.getName(),
+        color: cal.getColor()
+      });
+    });
+  });
+  out.sort(function (a, b) { return a.inicio - b.inicio; });
+  return out;
+}
+
+function salida(o) {
+  return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
+}
+
+// Ejecuta esta función una vez desde el editor para dar permiso de lectura a tu Gmail y tu Calendar.
+function probar() {
+  var r = JSON.parse(doGet({ parameter: { clave: CLAVE } }).getContent());
+  Logger.log('Correos: ' + r.correos.length + ' · Citas: ' + r.eventos.length + (r.avisos.length ? ' · ' + r.avisos.join(' | ') : ''));
+}
+</script>
 <script>
 "use strict";
 /* ---------- Catálogos ---------- */
@@ -281,9 +408,12 @@ function cargar(){
   if(!d){d={tareas:ejemplos(),asuntos:ASUNTOS_BASE.slice(),ajustes:{avisos:["1d"],horaDia:"08:30",horaDef:"09:00"}}}
   d.asuntos=d.asuntos||ASUNTOS_BASE.slice();
   d.ajustes=Object.assign({avisos:["1d"],horaDia:"08:30",horaDef:"09:00"},d.ajustes||{});
+  d.ajustes.informe=Object.assign({activo:true,hora:"08:00"},d.ajustes.informe||{});
+  d.ajustes.google=Object.assign({url:"",clave:""},d.ajustes.google||{});
+  d.descartados=d.descartados||[];
   return d;
 }
-function guardar(){try{localStorage.setItem(CLAVE,JSON.stringify(S))}catch(e){aviso("No se pudo guardar: memoria llena")}sincronizarAlarmas()}
+function guardar(){try{localStorage.setItem(CLAVE,JSON.stringify(S))}catch(e){aviso("No se pudo guardar: memoria llena")}sincronizarAlarmas();sincronizarInforme()}
 const nid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 
 /* ---------- Puente Android ---------- */
@@ -373,12 +503,143 @@ function sincronizarAlarmas(){
   llamar("sincronizarAlarmas",JSON.stringify(lista));
 }
 
+/* ---------- Google: Gmail y Calendar ---------- */
+const CLAVE_G="despacho.google";
+let G=(()=>{try{return JSON.parse(localStorage.getItem(CLAVE_G)||"null")}catch(e){return null}})();
+function guardarG(){try{localStorage.setItem(CLAVE_G,JSON.stringify(G))}catch(e){}}
+const conectado=()=>!!S.ajustes.google.url;
+function urlGoogle(){const g=S.ajustes.google;return g.url+(g.url.includes("?")?"&":"?")+"clave="+encodeURIComponent(g.clave)}
+function nuevaClave(){const a=new Uint8Array(18);crypto.getRandomValues(a);return Array.from(a,b=>"abcdefghijkmnpqrstuvwxyz23456789"[b%32]).join("")}
+function sincronizarInforme(){
+  if(!A)return;
+  llamar("guardarInstantanea",JSON.stringify(abiertas().filter(t=>!t.ejemplo).map(t=>({f:t.fecha||"",h:t.hora||"",e:t.estado,c:t.crit}))));
+  llamar("configurarInforme",!!S.ajustes.informe.activo,S.ajustes.informe.hora||"08:00");
+  llamar("configurarCorreo",conectado()?urlGoogle():"");
+}
+function actualizarGoogle(silencioso){
+  if(!conectado()||ui.gEstado==="cargando")return;
+  ui.gEstado="cargando";ui.gError="";
+  if(!silencioso&&(ui.vista==="informe"||ui.hoja?.tipo==="guia"))repintar();
+  if(A&&A.leerCorreo)llamar("leerCorreo",urlGoogle());
+  else fetch(urlGoogle()).then(r=>r.text()).then(t=>recibirCorreo(true,t),e=>recibirCorreo(false,String(e)));
+}
+window.recibirCorreo=function(ok,txt){
+  let j=null;
+  if(ok){try{j=JSON.parse(txt)}catch(e){}}
+  if(!ok){ui.gEstado="error";ui.gError=/40[13]/.test(txt)?"Google no deja entrar: en «Implementar» revisa que el acceso sea «Cualquier usuario».":"Sin conexión con Google ("+txt+"). Vuelve a intentarlo.";}
+  else if(!j){ui.gEstado="error";ui.gError="Esa dirección no devuelve datos. Copia la «URL de la aplicación web», la que acaba en /exec.";}
+  else if(!j.ok){ui.gEstado="error";ui.gError=j.error==="clave"?"La clave no coincide. Vuelve a copiar el código desde esta guía y crea una implementación nueva.":"El script respondió con un error.";}
+  else{
+    G={generado:j.generado,recibido:Date.now(),correos:j.correos||[],eventos:j.eventos||[],sinLeerBandeja:j.sinLeerBandeja||0,avisos:j.avisos||[]};guardarG();
+    ui.gEstado="ok";ui.gError="";
+    if(ui.probando)aviso("✅ Conectado: "+G.correos.length+" correos y "+G.eventos.length+" citas");
+    if(G.avisos.length&&ui.probando)setTimeout(()=>aviso("⚠️ "+G.avisos.join(" · ")),2600);
+  }
+  if(ui.gEstado==="error"&&ui.probando)aviso("❌ "+ui.gError);
+  ui.probando=false;
+  repintar();
+};
+function repintar(){if(ui.hoja?.tipo==="guia")pintarGuia();else if(!ui.hoja)render();else pintarCab()}
+function haceCuanto(ms){const m=Math.round((Date.now()-ms)/6e4);return m<1?"ahora mismo":m<60?"hace "+m+" min":m<1440?"hace "+Math.round(m/60)+" h":"hace "+Math.round(m/1440)+" d"}
+
+/* Citas */
+function citasDel(dia){
+  if(!G||!G.eventos)return [];
+  const ini=+inicioDia(dia),f=new Date(ini);f.setDate(f.getDate()+1);const fin=+f;
+  return G.eventos.filter(e=>e.todoElDia?(e.inicio<fin&&e.fin>ini):(e.inicio>=ini&&e.inicio<fin))
+    .sort((a,b)=>(b.todoElDia-a.todoElDia)||a.inicio-b.inicio);
+}
+const fmtHora=new Intl.DateTimeFormat("es-ES",{hour:"2-digit",minute:"2-digit"});
+function filaCita(e){
+  const ahora=Date.now(),pas=!e.todoElDia&&e.fin<ahora,ya=!e.todoElDia&&e.inicio<=ahora&&e.fin>ahora;
+  const hr=e.todoElDia?`Todo<small>el día</small>`:`${fmtHora.format(e.inicio)}<small>${fmtHora.format(e.fin)}</small>`;
+  return `<div class="cita ${pas?"pasada":""} ${ya?"ahora":""}"><span class="hr">${hr}</span><span class="qu"><b>${ya?"▶️ ":""}${esc(e.titulo)}</b>
+    ${e.lugar?`<small>📍 ${esc(e.lugar)}</small>`:""}<small><span class="cal" style="background:${/^#[0-9a-f]{3,8}$/i.test(e.color||"")?e.color:"var(--laton)"}"></span>${esc(e.calendario||"")}</small></span></div>`;
+}
+
+/* Correos: qué piden */
+const palabra=src=>new RegExp("(^|[^a-z0-9áéíóúüñ])("+src+")(?![a-z0-9áéíóúüñ])","i");
+const PISTAS=[
+  {re:palabra("requerimiento|notificaci[oó]n|sede electr[oó]nica|expediente|sanci[oó]n|multa|tr[aá]mite"),p:3,e:"🏛️",v:"Responder"},
+  {re:palabra("pagar|pago|importe|factura|recibo|cargo|domiciliaci[oó]n|abonar"),p:2,e:"💶",v:"Pagar"},
+  {re:palabra("cita|reuni[oó]n|confirmar|confirmaci[oó]n|recordatorio|reserva"),p:2,e:"📅",v:"Confirmar"},
+  {re:palabra("firmar|firma|documentaci[oó]n|rellenar|formulario|aportar|adjuntar|enviarnos"),p:2,e:"✍️",v:"Enviar"},
+  {re:palabra("pec|examen|ex[aá]menes|matr[ií]cula|calificaci[oó]n|tutor[ií]a|curso virtual|entrega"),p:2,e:"⚖️",v:"Revisar"},
+  {re:palabra("plazo|fecha l[ií]mite|vence|vencimiento|antes del|hasta el d[ií]a"),p:3,e:"⏳",v:"Atender"},
+  {re:palabra("urgente|cuanto antes|lo antes posible|[uú]ltimo aviso"),p:2,e:"🚨",v:null},
+  {re:/¿[^?]{8,}\?/,p:1,e:"❓",v:"Responder"}];
+const REGLAS_ASUNTO={
+  uned:/uned|curso virtual|\bpec\b|examen|matr[ií]cula|tutor[ií]a|derecho (civil|penal|mercantil|administrativo|internacional|procesal)/i,
+  tramites:/agenciatributaria|aeat|hacienda|seg-social|seguridad social|aut[oó]nomo|\biva\b|irpf|modelo \d{3}|\bdgt\b|tr[aá]fico|notific|banco|seguro|p[oó]liza|factura|gestor[ií]a/i,
+  casas:/alquiler|inquilin|comunidad de propietarios|administrador de fincas|caldera|fontaner|electricista|suministro|endesa|iberdrola|naturgy|emasesa|aguas|el puerto/i,
+  familia:/guarder[ií]a|colegio|escuela infantil|pediatr|cumplea|vacuna|famil/i};
+function sugerirAsunto(tx){
+  for(const a of S.asuntos){
+    const r=REGLAS_ASUNTO[a.id];
+    if(r&&r.test(tx))return a.id;
+    if(!r){const ws=a.nombre.toLowerCase().split(/[^a-záéíóúñ]+/).filter(w=>w.length>3);if(ws.some(w=>tx.toLowerCase().includes(w)))return a.id}
+  }
+  return null;
+}
+const MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+function detectarFecha(tx){
+  const hoy=inicioDia(new Date()),y0=hoy.getFullYear(),c=[];
+  const add=(y,m,d)=>{if(m<0||m>11||d<1||d>31)return;const f=new Date(y,m,d);if(f.getMonth()!==m)return;if(f>=hoy&&f-hoy<=200*DIA)c.push(f)};
+  for(const m of tx.matchAll(/(?<![\d.,])(\d{1,2})[\/-](\d{1,2})(?:[\/-](\d{2,4}))?(?!\d|[.,]\d)/g)){
+    let y=m[3]?+m[3]:y0;if(y<100)y+=2000;add(y,+m[2]-1,+m[1]);if(!m[3])add(y0+1,+m[2]-1,+m[1])}
+  for(const m of tx.matchAll(new RegExp("(\\d{1,2})\\s+de\\s+("+MESES.join("|")+")(?:\\s+de(?:l)?\\s+(\\d{4}))?","gi"))){
+    const mo=MESES.indexOf(m[2].toLowerCase()),y=m[3]?+m[3]:y0;add(y,mo,+m[1]);if(!m[3])add(y0+1,mo,+m[1])}
+  c.sort((a,b)=>a-b);return c[0]?isoDia(c[0]):null;
+}
+const analisis=new Map();
+function analizar(c){
+  if(analisis.has(c.id))return analisis.get(c.id);
+  const tx=(c.asunto||"")+" "+(c.texto||"");let p=0,em=[],v=null;
+  for(const x of PISTAS)if(x.re.test(tx)){p+=x.p;em.push(x.e);v=v||x.v}
+  if(/darse de baja|cancelar (la )?suscripci|unsubscribe|newsletter|bolet[ií]n/i.test(tx))p-=2;
+  if(c.destacado)p+=3;if(c.importante)p+=1;
+  const r={p,emojis:em.slice(0,3),accion:p>=3,verbo:v,asunto:sugerirAsunto(tx+" "+(c.email||"")+" "+(c.de||"")),fecha:detectarFecha(tx)};
+  analisis.set(c.id,r);return r;
+}
+const yaEsTarea=id=>S.tareas.find(t=>t.correo&&t.correo.id===id);
+function correosVisibles(){return (G&&G.correos||[]).filter(c=>!S.descartados.includes(c.id))}
+function enlaceCorreo(hilo){return "https://mail.google.com/mail/u/0/#all/"+encodeURIComponent(hilo)}
+function abrirEnlace(u){if(A)llamar("abrirEnlace",u);else window.open(u,"_blank","noopener")}
+const TONOS=["amarillo","rosa","azul","verde","naranja","lila"];
+function tarjetaCorreo(c){
+  const a=analizar(c),t=yaEsTarea(c.id),as=a.asunto?asunto(a.asunto):null;
+  const tono=TONOS[[...(c.email||c.de||"x")].reduce((h,ch)=>h+ch.charCodeAt(0),0)%6];
+  const f=new Date(c.fecha),d=difDias(new Date(),f);
+  const cuando=d===0?"hoy "+fmtHora.format(f):d===1?"ayer "+fmtHora.format(f):fmtCorto.format(f);
+  return `<article class="correo ${a.accion&&!t?"con":""}">
+    <div class="c-cab"><span class="av pi-${tono}">${esc((c.de||"?").trim().charAt(0).toUpperCase())}</span>
+      <div class="c-de"><b>${esc(c.de)}</b><small>${cuando}${c.sinLeer?" · sin leer":""}${c.mensajes>1?" · "+c.mensajes+" mensajes":""}</small></div>${c.destacado?"⭐":""}</div>
+    <div class="c-as">${esc(c.asunto)}</div>
+    ${c.texto?`<p class="c-tx">${esc(c.texto.slice(0,240))}</p>`:""}
+    ${(a.emojis.length||a.fecha||as)?`<div class="c-tags">${a.accion?`<span class="tag">🎯 Pide algo ${a.emojis.join("")}</span>`:a.emojis.length?`<span class="tag">${a.emojis.join("")}</span>`:""}
+      ${a.fecha?`<span class="tag">📅 ${esc(fmtCorto.format(new Date(a.fecha+"T12:00")))}</span>`:""}${as?`<span class="tag">${as.emoji} ${esc(as.nombre)}</span>`:""}</div>`:""}
+    <div class="c-acc">${t?`<button class="btn sec" data-abrir="${t.id}">📌 Ya es tarea</button>`:`<button class="btn" data-ctarea="${esc(c.id)}">➕ Crear tarea</button>`}
+      <button class="btn sec" data-cabrir="${esc(c.hilo)}" aria-label="Abrir en Gmail">📧 Abrir</button>
+      <button class="btn sec" data-cdesc="${esc(c.id)}" aria-label="Descartar este correo">🙈</button></div>
+  </article>`;
+}
+function tareaDesdeCorreo(id){
+  const c=(G&&G.correos||[]).find(x=>x.id===id);if(!c)return;
+  const a=analizar(c),limpio=(c.asunto||"").replace(/^(\s*(re|rv|fw|fwd|reenv|res)\s*:\s*)+/i,"").trim()||"Correo de "+c.de;
+  const man=new Date();man.setDate(man.getDate()+1);
+  return {id:nid(),titulo:((a.verbo?a.verbo+": ":"")+limpio).slice(0,140),asunto:a.asunto||S.asuntos[0]?.id,crit:a.p>=6?3:2,estado:"pend",
+    fecha:a.fecha||isoDia(man),hora:S.ajustes.horaDef,avisos:S.ajustes.avisos.slice(),
+    notas:"📧 "+c.de+(c.email&&c.email!==c.de?" <"+c.email+">":"")+"\n«"+c.asunto+"»\n\n"+(c.texto||"").slice(0,300)+((c.texto||"").length>300?"…":""),
+    sub:[],creada:Date.now(),cerrada:null,segDesde:null,hist:[],correo:{id:c.id,hilo:c.hilo,de:c.de,asunto:c.asunto}};
+}
+function urgencia(t){const v=venceDe(t),ah=new Date();if(!v)return t.crit*10-60;if(v<ah)return 1000+t.crit;const d=difDias(v,ah);return d===0?500+t.crit*10:t.crit*10-d*3}
+
 /* ---------- Cabecera ---------- */
 function pintarCab(){
   const h=new Date().getHours();
   $("#saludo").textContent=(h<6?"Buenas noches 🌙":h<13?"Buenos días ☕":h<21?"Buenas tardes 🪴":"Buenas noches 🌙");
   const fl=fmtLargo.format(new Date());$("#fecha").textContent=fl.charAt(0).toUpperCase()+fl.slice(1);
-  const n=abiertas().filter(t=>{const v=venceDe(t);return v&&v-Date.now()<DIA}).length;
+  const n=abiertas().filter(t=>{const v=venceDe(t);return v&&v-Date.now()<DIA}).length+(G&&conectado()?correosVisibles().filter(c=>analizar(c).accion&&!yaEsTarea(c.id)).length:0);
   $("#campana").innerHTML="🔔"+(n?"<b>"+n+"</b>":"");
 }
 
@@ -462,6 +723,82 @@ function vTablon(){
   <div class="notas" id="notas">${ts.length?ts.map(notaTarea).join(""):`<div class="papel" style="grid-column:1/-1"><p class="vacio">No hay tareas aquí. Pulsa ＋ para añadir una.</p></div>`}</div>`;
 }
 
+/* ---------- Informe ---------- */
+function vInforme(){
+  const hoy=new Date(),man=new Date();man.setDate(man.getDate()+1);
+  const ab=abiertas(),venc=vencidas(),hoyT=ab.filter(t=>t.fecha===isoDia(hoy)&&!venc.includes(t)),manT=ab.filter(t=>t.fecha===isoDia(man));
+  const citasH=citasDel(hoy),citasM=citasDel(man);
+  const cv=correosVisibles(),conAcc=cv.filter(c=>analizar(c).accion&&!yaEsTarea(c.id)),sinLeer=cv.filter(c=>c.sinLeer);
+  const ayer=new Date();ayer.setDate(ayer.getDate()-1);const ay=isoDia(ayer);
+  const cerrAyer=S.tareas.filter(t=>t.cerrada&&isoDia(new Date(t.cerrada))===ay),creAyer=S.tareas.filter(t=>isoDia(new Date(t.creada))===ay);
+  const foco=ab.slice().sort((a,b)=>urgencia(b)-urgencia(a)).slice(0,3);
+  // Frase del día
+  const n=(x,s,p)=>x+" "+(x===1?s:p);const fr=[];
+  if(conectado()&&G)fr.push(citasH.length?n(citasH.length,"cita","citas")+" en la agenda":"la agenda libre");
+  if(hoyT.length)fr.push(n(hoyT.length,"tarea que vence","tareas que vencen")+" hoy");
+  if(venc.length)fr.push(n(venc.length,"tarea vencida","tareas vencidas"));
+  let frase=fr.length?"Hoy tienes "+(fr.length>1?fr.slice(0,-1).join(", ")+" y "+fr[fr.length-1]:fr[0])+".":"Nada vence hoy. Buen día para adelantar trabajo. ☕";
+  if(conectado()&&G)frase+=conAcc.length?" En el correo hay "+n(conAcc.length,"mensaje que pide","mensajes que piden")+" algo.":" El correo no pide nada nuevo.";
+  // Correo
+  const fC=ui.fCorreo||"accion";
+  const lista=fC==="accion"?conAcc:fC==="leer"?sinLeer:cv.filter(c=>c.destacado);
+  const orden=lista.slice().sort((a,b)=>analizar(b).p-analizar(a).p||b.fecha-a.fecha);
+  const guia=`<button class="btn" data-acc="guia">🔗 Conectar Gmail y Calendar</button>`;
+  let bloqueCorreo;
+  if(!conectado())bloqueCorreo=`<div class="papel"><span class="chinche" style="--pin:var(--seg)"></span><h2>📬 Correo</h2>
+    <p class="mini" style="margin-top:0">Conecta tu cuenta de Google una vez y aquí verás los correos que piden algo (pagos, plazos, citas, notificaciones…) para pasarlos a tareas con un toque, y tus citas del día.</p>${guia}</div>`;
+  else bloqueCorreo=`<h3 class="sec-tit">📬 Correo <small style="margin-left:auto;font:700 12px var(--f-texto)">${ui.gEstado==="cargando"?"⏳ Actualizando…":G?"Actualizado "+haceCuanto(G.recibido):""}</small></h3>
+    ${ui.gEstado==="error"?`<div class="confirma">⚠️ ${esc(ui.gError)}<div class="acciones"><button class="btn sec" data-acc="refrescarG">Reintentar</button><button class="btn sec" data-acc="guia">Ver guía</button></div></div>`:""}
+    <div class="chips"><button class="chip" data-fcorreo="accion" aria-pressed="${fC==="accion"}">🎯 Piden algo ${conAcc.length}</button>
+      <button class="chip" data-fcorreo="leer" aria-pressed="${fC==="leer"}">📥 Sin leer ${sinLeer.length}</button>
+      <button class="chip" data-fcorreo="dest" aria-pressed="${fC==="dest"}">⭐ Destacados ${cv.filter(c=>c.destacado).length}</button>
+      <button class="chip" data-acc="refrescarG">🔄 Actualizar</button></div>
+    <div class="lista-correo">${!G?`<div class="papel"><p class="vacio">${ui.gEstado==="cargando"?"Leyendo tu correo…":"Pulsa 🔄 Actualizar para traer tu correo."}</p></div>`:
+      orden.length?orden.map(tarjetaCorreo).join(""):`<div class="papel"><p class="vacio">${fC==="accion"?"Ningún correo pendiente de acción. 🎉":"No hay correos en este filtro."}</p></div>`}</div>
+    ${S.descartados.length?`<p class="contador">🙈 ${n(S.descartados.length,"correo descartado","correos descartados")} · <button class="chip" data-acc="restaurarCorreos">Mostrar de nuevo</button></p>`:""}`;
+  return `<div class="papel parte"><span class="chinche" style="--pin:var(--laton)"></span><span class="placa">📰 Parte del día</span>
+    <h2 class="titular">${esc(fmtLargo.format(hoy).replace(/^./,x=>x.toUpperCase()))}</h2><p class="entradilla">${esc(frase)}</p>
+    <div class="cifras">${conectado()&&G?`<span class="tag">🗓️ ${n(citasH.length,"cita","citas")}</span>`:""}<span class="tag">🔥 ${hoyT.length} ${hoyT.length===1?"vence":"vencen"} hoy</span>
+      ${venc.length?`<span class="tag" style="color:var(--peligro)">⚠️ ${n(venc.length,"vencida","vencidas")}</span>`:""}<span class="tag">👀 ${ab.filter(t=>t.estado==="seg").length} en seguimiento</span>
+      ${conectado()&&G?`<span class="tag">📬 ${n(conAcc.length,"correo pide","correos piden")} algo</span>`:""}</div></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--seg)"></span><h2>🗓️ Agenda de hoy <small>${conectado()&&G?citasH.length:""}</small></h2>
+    ${!conectado()?`<p class="vacio">Conecta tu Google Calendar para ver aquí tus citas de hoy.</p>`:!G?`<p class="vacio">${ui.gEstado==="cargando"?"Leyendo tu agenda…":"Todavía sin datos. Pulsa 🔄 Actualizar en el correo."}</p>`:
+      citasH.length?citasH.map(filaCita).join(""):`<p class="vacio">Sin citas hoy. 🌤️</p>`}</div>
+  <div class="papel"><span class="chinche" style="--pin:var(--c4)"></span><h2>🎯 Foco del día</h2>
+    ${foco.length?foco.map(filaTarea).join(""):`<p class="vacio">No tienes tareas abiertas. 🎉</p>`}
+    ${venc.length+hoyT.length>3?`<p class="mini" style="margin:8px 0 0">Entre vencidas y de hoy suman ${venc.length+hoyT.length}. <button class="chip" data-filtro="abiertas">Ver todas</button></p>`:""}</div>
+  ${(manT.length||citasM.length)?`<div class="papel"><span class="chinche" style="--pin:var(--c2)"></span><h2>🔭 Mañana</h2>
+    ${citasM.map(filaCita).join("")}${manT.map(filaTarea).join("")}</div>`:""}
+  ${bloqueCorreo}
+  <div class="papel"><span class="chinche" style="--pin:var(--cerr)"></span><h2>📈 Ayer</h2>
+    <p class="mini" style="margin:0">✅ Cerraste <b>${cerrAyer.length}</b> ${cerrAyer.length===1?"tarea":"tareas"} y apuntaste <b>${creAyer.length}</b> ${creAyer.length===1?"nueva":"nuevas"}.${cerrAyer.length?" "+cerrAyer.slice(0,3).map(t=>"«"+esc(t.titulo)+"»").join(", ")+(cerrAyer.length>3?"…":""):""}</p></div>`;
+}
+
+/* ---------- Guía de conexión con Google ---------- */
+function codigoScript(){return $("#codigoGS").textContent.replace("__CLAVE__",S.ajustes.google.clave)}
+function abrirGuia(){
+  if(!S.ajustes.google.clave){S.ajustes.google.clave=nuevaClave();guardar()}
+  ui.hoja={tipo:"guia"};pintarGuia();
+}
+function pintarGuia(){
+  const g=S.ajustes.google,est=ui.gEstado;
+  abrirHoja(`<h3>🔗 Conectar Gmail y Google Calendar</h3>
+  <p class="mini" style="margin-top:0">Se hace una vez y tarda unos 5 minutos. Mejor desde el ordenador: pulsa «Enviármelo» y ábrelo allí.</p>
+  <ol class="pasos">
+    <li><span>Entra en <b>script.google.com</b> con tu cuenta de Gmail y pulsa <b>Nuevo proyecto</b>.</span></li>
+    <li><span>Borra lo que aparece, pega el código y pulsa 💾 <b>Guardar</b>.</span></li>
+    <li><span>Arriba elige la función <b>probar</b> y pulsa ▶ <b>Ejecutar</b>. Google pedirá permiso: <b>Revisar permisos</b> → tu cuenta → <b>Configuración avanzada</b> → <b>Ir a… (no seguro)</b> → <b>Permitir</b>. Sale así porque el script es tuyo y Google no lo ha revisado.</span></li>
+    <li><span>Pulsa <b>Implementar</b> → <b>Nueva implementación</b> → ⚙️ <b>Aplicación web</b>. Ejecutar como: <b>Yo</b>. Quién tiene acceso: <b>Cualquier usuario</b>. Pulsa <b>Implementar</b>.</span></li>
+    <li><span>Copia la <b>URL de la aplicación web</b> (acaba en <b>/exec</b>), pégala abajo y pulsa <b>Conectar</b>.</span></li>
+  </ol>
+  <div class="acciones" style="margin-bottom:14px"><button class="btn" data-acc="copiarCodigo">📋 Copiar código</button><button class="btn sec" data-acc="enviarCodigo">📤 Enviármelo</button></div>
+  <div class="nota-seg">🔒 El script solo lee tu correo y tu agenda: no envía, no borra y no marca nada. El código lleva una clave propia; aun así, no compartas la URL.</div>
+  <div class="campo"><label for="gUrl">URL de la aplicación web</label><input id="gUrl" type="url" inputmode="url" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(g.url)}"></div>
+  ${est==="error"?`<div class="confirma" style="margin-bottom:12px">⚠️ ${esc(ui.gError)}</div>`:""}
+  ${est==="ok"&&g.url&&G?`<p class="estado-ok">✔ Conectado: ${G.correos.length} correos y ${G.eventos.length} citas leídas ${haceCuanto(G.recibido)}.</p>`:""}
+  <div class="acciones"><button class="btn sec" data-acc="cerrarGuia">Cerrar</button><button class="btn ok" data-acc="conectarG">${est==="cargando"?"⏳ Probando…":"🔗 Conectar"}</button></div>`);
+}
+
 /* ---------- Métricas ---------- */
 function vMetricas(){
   const ahora=Date.now(),hoy=new Date(),cerradas=S.tareas.filter(t=>t.estado==="cerr"&&t.cerrada);
@@ -511,6 +848,8 @@ function vMetricas(){
     <div class="kpi"><span class="em">⏱️</span><b>${media===null?"—":media.toFixed(1).replace(".",",")+" d"}</b><span>tiempo medio de cierre</span></div>
     <div class="kpi"><span class="em">🔥</span><b>${racha} ${racha===1?"día":"días"}</b><span>racha cerrando tareas</span></div>
     <div class="kpi"><span class="em">🏆</span><b>${record}</b><span>récord cerradas en un día</span></div>
+    <div class="kpi"><span class="em">📧</span><b>${S.tareas.filter(t=>t.correo).length}</b><span>tareas nacidas del correo</span></div>
+    <div class="kpi"><span class="em">🧾</span><b>${S.tareas.filter(t=>t.creada>ahora-30*DIA).length}</b><span>apuntadas en 30 días</span></div>
     <div class="kpi ancho"><span class="em" style="font-size:26px">⚠️</span><div><b style="color:var(--peligro)">${vencidas().length}</b><span>abiertas fuera de plazo de ${abiertas().length} abiertas</span></div></div>
   </div>
   <div class="papel"><span class="chinche" style="--pin:var(--laton)"></span><h2>📈 Creadas y cerradas por semana</h2>${svg}
@@ -544,6 +883,15 @@ function vAjustes(){
       <div class="opciones">${AVISOS.map(a=>`<button class="chip" data-avdef="${a.id}" aria-pressed="${S.ajustes.avisos.includes(a.id)}">${a.n}</button>`).join("")}</div></div>
     <div class="dos"><div class="campo"><label for="horaDia">Hora del aviso «el mismo día»</label><input type="time" id="horaDia" value="${S.ajustes.horaDia}"></div>
       <div class="campo"><label for="horaDef">Hora de vencimiento por defecto</label><input type="time" id="horaDef" value="${S.ajustes.horaDef}"></div></div></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--laton)"></span><h2>📰 Informe diario</h2>
+    <div class="op"><div class="tx">Notificación cada mañana<small>Citas, tareas que vencen, vencidas y correos sin leer.</small></div>
+      <button class="interruptor" data-acc="informeOnOff" aria-pressed="${!!S.ajustes.informe.activo}">${S.ajustes.informe.activo?"Activado":"Desactivado"}</button></div>
+    <div class="op"><div class="tx"><label for="horaInforme">Hora del informe</label></div><input type="time" id="horaInforme" value="${S.ajustes.informe.hora}" style="border:1.5px solid var(--linea);background:var(--papel-2);border-radius:10px;padding:8px 10px"></div>
+    <div class="op"><div class="tx">Probar el informe<small>Te llega ahora con los datos de hoy.</small></div><button class="btn sec" data-acc="probarInforme">Probar</button></div></div>
+  <div class="papel"><span class="chinche" style="--pin:var(--seg)"></span><h2>🔗 Gmail y Google Calendar</h2>
+    <div class="op"><div class="tx">${conectado()?"Conectado":"Sin conectar"}<small>${conectado()?(G?"Última lectura "+haceCuanto(G.recibido)+": "+G.correos.length+" correos, "+G.eventos.length+" citas.":"Aún no se ha leído."):"Para ver tu correo y tus citas en el informe."}</small></div>
+      ${conectado()?`<span class="estado-ok">✔</span>`:`<span class="estado-mal">✖</span>`}</div>
+    <div class="acciones"><button class="btn${conectado()?" sec":""}" data-acc="guia">${conectado()?"⚙️ Ver guía":"🔗 Conectar"}</button>${conectado()?`<button class="btn sec" data-acc="desconectarG">Desconectar</button>`:""}</div></div>
   <div class="papel"><span class="chinche" style="--pin:var(--c2)"></span><h2>🗂️ Asuntos</h2>
     ${S.asuntos.map(a=>`<div class="op"><span style="font-size:22px">${a.emoji}</span><div class="tx"><b>${esc(a.nombre)}</b><small>${S.tareas.filter(t=>t.asunto===a.id).length} tareas</small></div><span class="tag pi-${a.color}" style="width:26px;height:26px;padding:0"></span><button class="btn sec" data-borrarasunto="${a.id}" aria-label="Borrar ${esc(a.nombre)}">🗑️</button></div>`).join("")}
     <div class="campo" style="margin-top:12px"><span class="lb">Nuevo asunto</span>
@@ -562,14 +910,15 @@ function vAjustes(){
 }
 
 /* ---------- Render ---------- */
-const VISTAS={escritorio:vEscritorio,tablon:vTablon,metricas:vMetricas,ajustes:vAjustes};
+const VISTAS={escritorio:vEscritorio,tablon:vTablon,informe:vInforme,metricas:vMetricas,ajustes:vAjustes};
 function render(){
   pintarCab();
   $("#vista").innerHTML=VISTAS[ui.vista]();
   document.querySelectorAll(".nav button").forEach(b=>b.setAttribute("aria-current",b.dataset.ir===ui.vista?"page":"false"));
   $("#fab").hidden=ui.vista==="ajustes";
 }
-function ir(v){ui.vista=v;render();window.scrollTo(0,0)}
+function ir(v){ui.vista=v;render();window.scrollTo(0,0);if(v==="informe"&&conectado()&&(!G||Date.now()-G.recibido>10*6e4))actualizarGoogle(true)}
+window.irA=function(v){if(ui.hoja){$("#hoja").hidden=true;$("#velo").hidden=true;ui.hoja=null}if(VISTAS[v])ir(v)};
 
 /* ---------- Hoja: detalle ---------- */
 function abrirHoja(html){$("#hojaIn").innerHTML='<div class="asa"></div>'+html;$("#hoja").hidden=false;$("#velo").hidden=false;$("#hoja").scrollTop=0}
@@ -583,6 +932,7 @@ function abrirTarea(id){
   <div class="det-tags"><span class="tag pi-${as.color}" style="color:var(--nota-tinta)">${as.emoji} ${esc(as.nombre)}</span><span class="tag">${CRIT[t.crit].e} ${CRIT[t.crit].n}</span>
     <span class="tag" ${e.mal?'style="color:var(--peligro)"':""}>📅 ${v?esc(fmtLargo.format(v))+(t.hora?" · "+t.hora:""):"Sin fecha"}</span>
     ${(t.avisos||[]).length&&v?`<span class="tag">🔔 ${t.avisos.map(a=>AVISOS.find(x=>x.id===a)?.n).join(", ")}</span>`:""}</div>
+  ${t.correo?`<button class="btn sec" style="width:100%;margin-bottom:12px" data-cabrir="${esc(t.correo.hilo)}">📧 Ver el correo de ${esc(t.correo.de)}</button>`:""}
   <div class="campo"><span class="lb">Cambiar estado</span></div>
   <div class="cambio">${Object.entries(ESTADOS).map(([k,x])=>`<button data-e="${k}" data-cambiar="${k}" aria-pressed="${t.estado===k}"><span>${x.e}</span>${x.n}</button>`).join("")}</div>
   ${t.notas?`<div class="det-notas">${esc(t.notas)}</div>`:""}
@@ -605,7 +955,8 @@ function cambiarEstado(t,e){
 
 /* ---------- Hoja: formulario ---------- */
 let borrador=null;
-function abrirFormulario(t){
+function abrirFormulario(t,preset){
+  if(preset){borrador=preset;ui.hoja={tipo:"form",nuevo:true};pintarFormulario();return}
   const nuevo=!t;
   const man=new Date(Date.now()+DIA);
   borrador=t?JSON.parse(JSON.stringify(t)):{id:nid(),titulo:"",asunto:ui.filtroAsunto!=="todos"?ui.filtroAsunto:S.asuntos[0]?.id,crit:2,estado:"pend",
@@ -617,6 +968,7 @@ function abrirFormulario(t){
 function pintarFormulario(){
   const b=borrador,nuevo=ui.hoja.nuevo;
   abrirHoja(`<h3>${nuevo?"📝 Nueva tarea":"✏️ Editar tarea"}</h3>
+  ${b.correo?`<div class="nota-seg">📧 Desde el correo de ${esc(b.correo.de)}: «${esc(b.correo.asunto)}»</div>`:""}
   <div class="campo"><label for="fTitulo">Qué hay que hacer</label><input id="fTitulo" maxlength="140" placeholder="Ej.: Presentar el modelo 303" value="${esc(b.titulo)}"></div>
   <div class="campo"><span class="lb">Asunto</span><div class="opciones">${S.asuntos.map(a=>`<button class="chip" data-fas="${a.id}" aria-pressed="${b.asunto===a.id}">${a.emoji} ${esc(a.nombre)}</button>`).join("")}</div></div>
   <div class="campo"><span class="lb">Criticidad</span><div class="opciones">${[4,3,2,1].map(c=>`<button class="chip" data-fcrit="${c}" aria-pressed="${b.crit===c}">${CRIT[c].e} ${CRIT[c].n}</button>`).join("")}</div></div>
@@ -673,9 +1025,27 @@ document.addEventListener("click",ev=>{
     if(n){aviso("Tiene "+n+" tareas: muévelas antes de borrarlo");return}
     if(S.asuntos.length<=1){aviso("Necesitas al menos un asunto");return}
     S.asuntos=S.asuntos.filter(a=>a.id!==d.borrarasunto);guardar();render();aviso("🗑️ Asunto borrado");return}
+  if(d.fcorreo){ui.fCorreo=d.fcorreo;render();return}
+  if(d.ctarea){const p=tareaDesdeCorreo(d.ctarea);if(p)abrirFormulario(null,p);return}
+  if(d.cabrir){abrirEnlace(enlaceCorreo(d.cabrir));return}
+  if(d.cdesc){S.descartados.push(d.cdesc);if(S.descartados.length>400)S.descartados=S.descartados.slice(-400);guardar();render();aviso("🙈 Correo descartado");return}
   if(d.acc)acciones[d.acc]?.(el);
 });
 const acciones={
+  guia(){abrirGuia()},
+  cerrarGuia(){cerrarHoja()},
+  refrescarG(){actualizarGoogle(false)},
+  restaurarCorreos(){S.descartados=[];guardar();render()},
+  copiarCodigo(){const c=codigoScript();
+    if(A){aviso(llamar("copiar",c)?"📋 Código copiado":"No se pudo copiar")}
+    else navigator.clipboard?.writeText(c).then(()=>aviso("📋 Código copiado"),()=>aviso("No se pudo copiar"))},
+  enviarCodigo(){const c=codigoScript();if(A)llamar("compartirTexto",c,"Mi Despacho · código para script.google.com");else acciones.copiarCodigo()},
+  conectarG(){const u=($("#gUrl").value||"").trim();
+    if(!/^https:\/\/script\.google(usercontent)?\.com\/.+/.test(u)){ui.gEstado="error";ui.gError="La URL debe empezar por https://script.google.com/ y acabar en /exec.";pintarGuia();return}
+    S.ajustes.google.url=u;guardar();ui.probando=true;ui.gEstado=null;actualizarGoogle(false)},
+  desconectarG(){S.ajustes.google.url="";G=null;try{localStorage.removeItem(CLAVE_G)}catch(e){}ui.gEstado=null;guardar();render();aviso("Google desconectado")},
+  informeOnOff(){S.ajustes.informe.activo=!S.ajustes.informe.activo;guardar();render();aviso(S.ajustes.informe.activo?"📰 Te llegará cada día a las "+S.ajustes.informe.hora:"Informe diario desactivado")},
+  probarInforme(){if(!A){aviso("La prueba funciona en el móvil");return}aviso("📰 Preparando el parte…");llamar("probarInforme")},
   borrarEjemplos(){S.tareas=S.tareas.filter(t=>!t.ejemplo);guardar();render();aviso("🧹 Ejemplos borrados. ¡Tu despacho está listo!")},
   quitarDia(){ui.filtroDia=null;ui.filtroEstado="abiertas";render()},
   editar(){const t=S.tareas.find(x=>x.id===ui.hoja.id);abrirFormulario(t)},
@@ -706,6 +1076,7 @@ document.addEventListener("change",ev=>{
   if(el.dataset.subok!==undefined){const t=S.tareas.find(x=>x.id===ui.hoja.id);t.sub[+el.dataset.subok].ok=el.checked;guardar();vibrar();abrirTarea(t.id);return}
   if(el.id==="orden"){ui.orden=el.value;render();return}
   if(el.id==="horaDia"&&el.value){S.ajustes.horaDia=el.value;guardar();aviso("Hora guardada");return}
+  if(el.id==="horaInforme"&&el.value){S.ajustes.informe.hora=el.value;guardar();aviso("📰 Informe a las "+el.value);return}
   if(el.id==="horaDef"&&el.value){S.ajustes.horaDef=el.value;guardar();aviso("Hora guardada");return}
   if(el.id==="importar"&&el.files[0]){const r=new FileReader();r.onload=()=>{
     try{const j=JSON.parse(r.result),d=j.datos||j;if(!Array.isArray(d.tareas))throw 0;
@@ -717,7 +1088,7 @@ document.addEventListener("input",ev=>{if(ev.target.id==="busca"){clearTimeout(b
 document.addEventListener("keydown",ev=>{if(ev.key==="Enter"){if(ev.target.id==="fSub"){ev.preventDefault();acciones.fAddSub()}else if(ev.target.id==="detSub"){ev.preventDefault();acciones.detAddSub()}}});
 $("#fab").addEventListener("click",()=>abrirFormulario(null));
 $("#velo").addEventListener("click",()=>{if(ui.hoja?.tipo==="form")return;cerrarHoja()});
-$("#campana").addEventListener("click",()=>{ui.filtroEstado="abiertas";ui.orden="venc";ui.filtroDia=null;ir("tablon")});
+$("#campana").addEventListener("click",()=>{ui.filtroDia=null;ir("informe")});
 
 /* Botón atrás de Android: devuelve true si lo ha gestionado la app */
 window.manejarAtras=function(){
@@ -726,13 +1097,15 @@ window.manejarAtras=function(){
   return false;
 };
 window.abrirTarea=abrirTarea;
-window.alVolver=function(){render();sincronizarAlarmas()};
+window.alVolver=function(){if(!ui.hoja)render();sincronizarAlarmas();if(conectado()&&G&&Date.now()-G.recibido>10*6e4)actualizarGoogle(true)};
 
 S=cargar();
 render();
 sincronizarAlarmas();
 setInterval(pintarCab,60000);
-(function(){const t=llamar("tareaInicial");if(t)abrirTarea(t)})();
+sincronizarInforme();
+(function(){const v=llamar("vistaInicial");if(v&&VISTAS[v])ir(v);const t=llamar("tareaInicial");if(t)abrirTarea(t)})();
+if(conectado()&&(!G||Date.now()-G.recibido>10*6e4))actualizarGoogle(true);
 if(A&&!localStorage.getItem("despacho.permisos")){try{localStorage.setItem("despacho.permisos","1")}catch(e){}setTimeout(()=>llamar("pedirPermisos"),800)}
 </script>
 </body>
